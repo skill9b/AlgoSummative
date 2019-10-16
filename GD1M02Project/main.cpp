@@ -8,8 +8,8 @@
 //
 // File Name	: 
 // Description	: 
-// Author		: Your Name
-// Mail			: your.name@mediadesign.school.nz
+// Author		: Jay Patel, Vivian Xu
+// Mail			: ????????????? ,vivian.xu9501@mediadesign.school.nz
 //
 
 
@@ -24,12 +24,7 @@
 #define WINDOW_CLASS_NAME L"WINCLASS1"
 
 HMENU g_hMenu;
-HWND g_hDlgMatrix, g_hDlgTransformation, g_hDlgGaussian, g_hDlgQuaternion, g_hDlgSLERP;
-
-void GameLoop()
-{
-	//One frame of game logic occurs here...
-}
+HWND g_hDlgBFSDFS, g_hDlgAStar;
 
 LRESULT CALLBACK WindowProc(HWND _hwnd,
 	UINT _msg,
@@ -40,96 +35,73 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 	PAINTSTRUCT ps; // Used in WM_PAINT.
 	HDC hdc;        // Handle to a device context.
 
-					// What is the message?
 	switch (_msg)
 	{
-	case WM_CREATE:
-	{
-		// Do initialization stuff here.
-
-		// Return Success.
-		return (0);
-	}
-	break;
-
-	case WM_PAINT:
-	{
-		// Simply validate the window.
-		hdc = BeginPaint(_hwnd, &ps);
-
-		// You would do all your painting here...
-
-		EndPaint(_hwnd, &ps);
-
-		// Return Success.
-		return (0);
-	}
-	break;
-
-	case WM_COMMAND:
-	{
-		switch (LOWORD(_wparam))
+		case WM_CREATE:
 		{
-		case ID_EXIT:
-		{
-			PostQuitMessage(0);
-			break;
+			// Do initialization stuff here.
+
+			// Return Success.
+			return (0);
 		}
-		case ID_CALCULATOR_MATRIX:
+		break;
+		case WM_PAINT:
 		{
-			ShowWindow(g_hDlgMatrix, SW_SHOWNORMAL);
-			break;
-		}
-		case ID_CALCULATOR_TRANSFORMATION:
-		{
-			ShowWindow(g_hDlgTransformation, SW_SHOWNORMAL);
-			break;
+			// Simply validate the window.
+			hdc = BeginPaint(_hwnd, &ps);
 
+			// You would do all your painting here...
+
+			EndPaint(_hwnd, &ps);
+
+			// Return Success.
+			return (0);
 		}
-		//open the matrix dialog
-		case ID_CALCULATOR_GAUSSIAN:
+		break;
+		case WM_COMMAND:
 		{
-			ShowWindow(g_hDlgGaussian, SW_SHOWNORMAL);
-			break;
-		}
-		//open the gaussian dialog
-		case ID_CALCULATOR_QUATERNION:
-		{
-			ShowWindow(g_hDlgQuaternion, SW_SHOWNORMAL);
-			break;
-		}
-		//open the quaternion dialog
-		case ID_CALCULATOR_SLERP:
-		{
-			ShowWindow(g_hDlgSLERP, SW_SHOWNORMAL);
-			break;
-		}
-		default:
-			break;
+			switch (LOWORD(_wparam))
+			{
+				case ID_EXIT:
+				{
+					PostQuitMessage(0);
+					break;
+				}
+				case ID_BFSDFS:
+				{
+					ShowWindow(g_hDlgBFSDFS, SW_SHOWNORMAL);
+					break;
+				}
+				case ID_ASTAR:
+				{
+					ShowWindow(g_hDlgAStar, SW_SHOWNORMAL);
+					break;
+				}
+				default:
+					break;
+			}
 		}
 		return(0);
-	}
-	break;
+		break;
+		case WM_DESTROY:
+		{
+			// Kill the application, this sends a WM_QUIT message.
+			PostQuitMessage(0);
 
-	case WM_DESTROY:
-	{
-		// Kill the application, this sends a WM_QUIT message.
-		PostQuitMessage(0);
+			// Return success.
+			return (0);
+		}
+		break;
 
-		// Return success.
-		return (0);
-	}
-	break;
-
-	default:break;
+		default:
+			break;
 	} // End switch.
-
 	  // Process any messages that we did not take care of...
 
 	return (DefWindowProc(_hwnd, _msg, _wparam, _lparam));
 }
 
-BOOL CALLBACK MatrixDlgProc(HWND _hwnd,
+BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 	UINT _msg,
 	WPARAM _wparam,
 	LPARAM _lparam)
@@ -141,11 +113,11 @@ BOOL CALLBACK MatrixDlgProc(HWND _hwnd,
 	{
 		switch (LOWORD(_wparam))
 		{
-		case IDC_EDIT_A11:
+		/*case IDC_EDIT_A11:
 		{
 			_value = ReadFromEditBox(_hwnd, IDC_EDIT_A11);
 			break;
-		}
+		}*/
 		default:
 			break;
 		}
@@ -154,7 +126,6 @@ BOOL CALLBACK MatrixDlgProc(HWND _hwnd,
 	}
 	case WM_CLOSE:
 	{
-		MessageBox(_hwnd, ToWideString(_value).c_str(), L"Value in A11", MB_OK);
 		ShowWindow(_hwnd, SW_HIDE);
 		return TRUE;
 		break;
@@ -165,7 +136,7 @@ BOOL CALLBACK MatrixDlgProc(HWND _hwnd,
 	return FALSE;
 }
 
-BOOL CALLBACK TransformationDlgProc(HWND _hwnd,
+BOOL CALLBACK AStarDlgProc(HWND _hwnd,
 	UINT _msg,
 	WPARAM _wparam,
 	LPARAM _lparam)
@@ -185,67 +156,6 @@ BOOL CALLBACK TransformationDlgProc(HWND _hwnd,
 	return FALSE;
 }
 
-
-BOOL CALLBACK GaussianDlgProc(HWND _hwnd,
-	UINT _msg,
-	WPARAM _wparam,
-	LPARAM _lparam)
-{
-
-	switch (_msg)
-	{
-	case WM_CLOSE:
-	{
-		ShowWindow(_hwnd, SW_HIDE);
-		return TRUE;
-		break;
-	}
-	default:
-		break;
-	}
-	return FALSE;
-}
-
-
-BOOL CALLBACK QuaternionDlgProc(HWND _hwnd,
-	UINT _msg,
-	WPARAM _wparam,
-	LPARAM _lparam)
-{
-
-	switch (_msg)
-	{
-	case WM_CLOSE:
-	{
-		ShowWindow(_hwnd, SW_HIDE);
-		return TRUE;
-		break;
-	}
-	default:
-		break;
-	}
-	return FALSE;
-}
-
-BOOL CALLBACK SLERPDlgProc(HWND _hwnd,
-	UINT _msg,
-	WPARAM _wparam,
-	LPARAM _lparam)
-{
-
-	switch (_msg)
-	{
-	case WM_CLOSE:
-	{
-		ShowWindow(_hwnd, SW_HIDE);
-		return TRUE;
-		break;
-	}
-	default:
-		break;
-	}
-	return FALSE;
-}
 
 int WINAPI WinMain(HINSTANCE _hInstance,
 	HINSTANCE _hPrevInstance,
@@ -277,15 +187,15 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 		return (0);
 	}
 
-	//Laod the Menu
-	g_hMenu = LoadMenu(_hInstance, MAKEINTRESOURCE(IDR_MENU1));
+	//Load the Menu
+	g_hMenu = LoadMenu(_hInstance, MAKEINTRESOURCE(IDR_MENU));
 
-	// create the window
+	// Create the window
 	hwnd = CreateWindowEx(NULL, // Extended style.
 		WINDOW_CLASS_NAME,      // Class.
 		L"Your Basic Window",   // Title.
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-		0, 0,                    // Initial x,y.
+		350, 200,                    // Initial x,y.
 		400, 100,                // Initial width, height.
 		NULL,                   // Handle to parent.
 		g_hMenu,                   // Handle to menu.
@@ -299,11 +209,8 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 
 	//Create the modeless dialog boxes for the calculators
 	//Matrix Calculator
-	g_hDlgMatrix = CreateDialog(_hInstance, MAKEINTRESOURCE(IDD_DialogMatrix), hwnd, (DLGPROC)MatrixDlgProc);
-	g_hDlgTransformation = CreateDialog(_hInstance, MAKEINTRESOURCE(IDD_DialogTransformations), hwnd, (DLGPROC)TransformationDlgProc);
-	g_hDlgGaussian = CreateDialog(_hInstance, MAKEINTRESOURCE(IDD_DialogGaussian), hwnd, (DLGPROC)GaussianDlgProc);
-	g_hDlgQuaternion = CreateDialog(_hInstance, MAKEINTRESOURCE(IDD_DialogQuaternion), hwnd, (DLGPROC)QuaternionDlgProc);
-	g_hDlgSLERP = CreateDialog(_hInstance, MAKEINTRESOURCE(IDD_DialogSLERP), hwnd, (DLGPROC)SLERPDlgProc);
+	g_hDlgBFSDFS = CreateDialog(_hInstance, MAKEINTRESOURCE(IDD_DialogBFSDFS), hwnd, (DLGPROC)BfsDfsDlgProc);
+	g_hDlgAStar = CreateDialog(_hInstance, MAKEINTRESOURCE(IDD_DialogAStar), hwnd, (DLGPROC)AStarDlgProc);
 
 	// Enter main event loop
 	while (true)
@@ -317,8 +224,8 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 				break;
 			}
 
-			if ((g_hDlgMatrix == 0 && g_hDlgTransformation == 0 && g_hDlgGaussian == 0 && g_hDlgQuaternion == 0 && g_hDlgSLERP == 0) ||
-				(!IsDialogMessage(g_hDlgMatrix, &msg) && !IsDialogMessage(g_hDlgTransformation, &msg) && !IsDialogMessage(g_hDlgGaussian, &msg) && !IsDialogMessage(g_hDlgQuaternion, &msg) && !IsDialogMessage(g_hDlgSLERP, &msg)))
+			if ((g_hDlgBFSDFS == 0 && g_hDlgAStar == 0) ||
+				(!IsDialogMessage(g_hDlgBFSDFS, &msg) && !IsDialogMessage(g_hDlgAStar, &msg)))
 			{
 				// Translate any accelerator keys.
 				TranslateMessage(&msg);
@@ -327,8 +234,6 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 			}
 		}
 
-		// Main game processing goes here.
-		GameLoop(); //One frame of game logic occurs here...
 	}
 
 	// Return to Windows like this...
