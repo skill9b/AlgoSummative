@@ -22,9 +22,12 @@
 #include "resource.h"
 
 #define WINDOW_CLASS_NAME L"WINCLASS1"
+#define BFSDFS_BUTTON_TEXT L"BFS & DFS"
+#define ASTAR_BUTTON_TEXT L"A STAR"
 
 HMENU g_hMenu;
-HWND g_hDlgBFSDFS, g_hDlgAStar;
+HWND g_hDlgBFSDFS, g_hDlgAStar;		// Dialog handles
+HWND BfsDfsButton, AStarButton;
 
 LRESULT CALLBACK WindowProc(HWND _hwnd,
 	UINT _msg,
@@ -73,6 +76,16 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 					break;
 				}
 				case ID_ASTAR:
+				{
+					ShowWindow(g_hDlgAStar, SW_SHOWNORMAL);
+					break;
+				}
+				case BFSDFS_BUTTON:
+				{
+					ShowWindow(g_hDlgBFSDFS, SW_SHOWNORMAL);
+					break;
+				}
+				case ASTAR_BUTTON:
 				{
 					ShowWindow(g_hDlgAStar, SW_SHOWNORMAL);
 					break;
@@ -196,7 +209,7 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 		L"Your Basic Window",   // Title.
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE,
 		350, 200,                    // Initial x,y.
-		400, 100,                // Initial width, height.
+		400, 500,                // Initial width, height.
 		NULL,                   // Handle to parent.
 		g_hMenu,                   // Handle to menu.
 		_hInstance,             // Instance of this application.
@@ -206,6 +219,36 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 	{
 		return (0);
 	}
+
+	BfsDfsButton = CreateWindowEx(
+		0,							// Extended possibilities for variation
+		L"BUTTON",					// Class name
+		BFSDFS_BUTTON_TEXT,			// Button text
+		WS_CHILD | WS_VISIBLE,		// Child to the window, visible
+		55,							// x co-ordinate
+		55,							// y co-ordinate		
+		80,							// Width
+		18,							// Height
+		hwnd,						// Button is child to our window
+		(HMENU)BfsDfsButton,		
+		NULL,						// Program instance handler
+		NULL						// No Window creation data
+	);
+
+	AStarButton = CreateWindowEx(
+		0,
+		L"BUTTON",
+		ASTAR_BUTTON_TEXT,
+		WS_CHILD | WS_VISIBLE,
+		55,
+		75,
+		80,
+		18,
+		hwnd,
+		(HMENU)AStarButton,
+		NULL,
+		NULL
+	);
 
 	//Create the modeless dialog boxes for the calculators
 	//Matrix Calculator

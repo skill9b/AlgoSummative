@@ -7,6 +7,8 @@
 #define IDR_MENU                        103
 #define ID_BFSDFS                       104
 #define ID_ASTAR                        105
+#define BFSDFS_BUTTON					1001
+#define ASTAR_BUTTON					1002
 #define ID_EXIT                         106
 
 // Next default values for new objects
