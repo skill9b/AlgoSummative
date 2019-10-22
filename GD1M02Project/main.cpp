@@ -12,7 +12,7 @@
 // Mail			: ????????????? ,vivian.xu9501@mediadesign.school.nz
 //
 
-
+//Hi
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>   // Include all the windows headers.
