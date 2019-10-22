@@ -9,7 +9,7 @@
 // File Name	: 
 // Description	: 
 // Author		: Jay Patel, Vivian Xu
-// Mail			: ????????????? ,vivian.xu9501@mediadesign.school.nz
+// Mail			: jay.pat8646@mediadesign.school.nz ,vivian.xu9501@mediadesign.school.nz
 //
 
 //Hi

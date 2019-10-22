@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="cGraph.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
@@ -146,6 +147,7 @@
     <ResourceCompile Include="GD1M02Project.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cGraph.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
