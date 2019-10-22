@@ -1,1 +1,4 @@
-﻿  GD1M02Project.vcxproj -> C:\Users\vivxu\Desktop\AlgoSummative\AlgoSummative\x64\Debug\GD1M02Project.exe
+﻿  main.cpp
+C:\Users\vivxu\Desktop\AlgoSummative\AlgoSummative\GD1M02Project\main.cpp(136,3): warning C4065: switch statement contains 'default' but no 'case' labels
+  LINK : C:\Users\vivxu\Desktop\AlgoSummative\AlgoSummative\x64\Debug\GD1M02Project.exe not found or not built by the last incremental link; performing full link
+  GD1M02Project.vcxproj -> C:\Users\vivxu\Desktop\AlgoSummative\AlgoSummative\x64\Debug\GD1M02Project.exe
