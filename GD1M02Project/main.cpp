@@ -124,13 +124,19 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 	{
 	case WM_COMMAND:
 	{
+		
+
 		switch (LOWORD(_wparam))
 		{
-		/*case IDC_EDIT_A11:
+		case IDC_BUTTON1:
 		{
-			_value = ReadFromEditBox(_hwnd, IDC_EDIT_A11);
+			std::string string = ReadFromEditBox(_hwnd, IDC_EDIT2);
+			//Split string into 2 ints here
+
+
+			//_value = ReadFromEditBox(_hwnd, IDC_EDIT_A11);
 			break;
-		}*/
+		}
 		default:
 			break;
 		}
