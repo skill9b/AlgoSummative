@@ -17,7 +17,8 @@
 
 #include <windows.h>   // Include all the windows headers.
 #include <windowsx.h>  // Include useful macros.
-
+#include <string>
+#include "cGraph.h"
 #include "utils.h"
 #include "resource.h"
 
@@ -124,18 +125,32 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 	{
 	case WM_COMMAND:
 	{
-		
+		cGraph Graph(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1))); //Makes graph with amount of nodes read from first edit box
+
+		int iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
+
+		int iEdges[20] = { IDC_EDIT2, IDC_EDIT3, IDC_EDIT4, IDC_EDIT5, IDC_EDIT6, IDC_EDIT7, IDC_EDIT8, IDC_EDIT9, IDC_EDIT10, IDC_EDIT11,
+						   IDC_EDIT12, IDC_EDIT13, IDC_EDIT14, IDC_EDIT15, IDC_EDIT16, IDC_EDIT17, IDC_EDIT18, IDC_EDIT19, IDC_EDIT20, IDC_EDIT21 };
 
 		switch (LOWORD(_wparam))
 		{
 		case IDC_BUTTON1:
 		{
-			std::string string = ReadFromEditBox(_hwnd, IDC_EDIT2);
-			//Split string into 2 ints here
+			std::string strEdges = ReadFromEditBox(_hwnd, IDC_EDIT2);
+			int iFirst, iSecond;
 
-
-			//_value = ReadFromEditBox(_hwnd, IDC_EDIT_A11);
+			for (int i = 0; i < iAmountOfEdges; i++)
+			{
+				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
+				iFirst = std::atoi(&strEdges[0]);
+				iSecond = std::atoi(&strEdges[1]);
+				
+			}
 			break;
+		}
+		case IDC_BUTTON6:
+		{
+
 		}
 		default:
 			break;
