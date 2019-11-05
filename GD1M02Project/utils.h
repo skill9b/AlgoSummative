@@ -57,6 +57,7 @@ int StringToWString(std::wstring& ws, const std::string& s)
 
 	return 0;
 }
+
 //Converts wchar_t array to std::string
 std::string ToNarrow(const wchar_t* s, char dfault = '?', const std::locale& loc = std::locale())
 {

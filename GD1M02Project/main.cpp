@@ -30,6 +30,7 @@ HMENU g_hMenu;
 HWND g_hDlgBFSDFS, g_hDlgAStar;		// Dialog handles
 HWND BfsDfsButton, AStarButton;
 
+
 LRESULT CALLBACK WindowProc(HWND _hwnd,
 	UINT _msg,
 	WPARAM _wparam,
@@ -120,21 +121,21 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 	WPARAM _wparam,
 	LPARAM _lparam)
 {
+	cGraph* Graph = new cGraph(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1))); //Makes graph with amount of nodes read from first edit box
+
+	int iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
+
+	int iEdges[20] = { IDC_EDIT2, IDC_EDIT3, IDC_EDIT4, IDC_EDIT5, IDC_EDIT6, IDC_EDIT7, IDC_EDIT8, IDC_EDIT9, IDC_EDIT10, IDC_EDIT11,
+					   IDC_EDIT12, IDC_EDIT13, IDC_EDIT14, IDC_EDIT15, IDC_EDIT16, IDC_EDIT17, IDC_EDIT18, IDC_EDIT19, IDC_EDIT20, IDC_EDIT21 };
+
 	static float _value;
 	switch (_msg)
 	{
 	case WM_COMMAND:
 	{
-		cGraph Graph(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1))); //Makes graph with amount of nodes read from first edit box
-
-		int iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
-
-		int iEdges[20] = { IDC_EDIT2, IDC_EDIT3, IDC_EDIT4, IDC_EDIT5, IDC_EDIT6, IDC_EDIT7, IDC_EDIT8, IDC_EDIT9, IDC_EDIT10, IDC_EDIT11,
-						   IDC_EDIT12, IDC_EDIT13, IDC_EDIT14, IDC_EDIT15, IDC_EDIT16, IDC_EDIT17, IDC_EDIT18, IDC_EDIT19, IDC_EDIT20, IDC_EDIT21 };
-
 		switch (LOWORD(_wparam))
 		{
-		case IDC_BUTTON1:
+		case IDC_BUTTON1:	// Input Edges
 		{
 			std::string strEdges; //= ReadFromEditBox(_hwnd, IDC_EDIT2);
 			int iFirst, iSecond;
@@ -144,14 +145,15 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
 				iFirst = std::atoi(&strEdges[0]);
 				iSecond = std::atoi(&strEdges[2]);
-				Graph.addEdge(iFirst, iSecond);
+				Graph->addEdge(iFirst, iSecond);
 			}
 			break;
 		}
 		case IDC_BUTTON6: //BFS
 		{
-			std::string string = Graph.BFS(0);
-			WriteToEditBoxString(_hwnd, IDC_EDIT24, Graph.BFS(0));
+			std::string string = Graph->BFS(0);
+			WriteToEditBoxString(_hwnd, IDC_EDIT24, Graph->BFS(0));
+			break;
 		}
 		default:
 			break;

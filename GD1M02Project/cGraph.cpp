@@ -3,7 +3,7 @@
 cGraph::cGraph(int _v)
 {
 	this->iVertices = _v;
-	adjList = new list<int>[_v];
+	adjList = new list<int> [_v];
 }
 
 cGraph::~cGraph()
@@ -59,9 +59,7 @@ std::string cGraph::BFS(int s)
 			strBFS = strBFS + ", " + strNodeToAdd; //Updates return string with current node every loop
 		}
 		
-		
 
-		Queue.pop_front(); //Dequeue current visited vertex
 
 		//Get all adjecent vertices of matrix just dequeued
 		for (Iterator = adjList[s].begin(); Iterator != adjList[s].end(); Iterator++)
@@ -75,8 +73,11 @@ std::string cGraph::BFS(int s)
 				Queue.push_back(*Iterator);
 			}
 		}
-		
+
+		Queue.pop_front(); //Dequeue current visited vertex
+
 	}
+
 	//return string version of output
 	return (strBFS);
 }
