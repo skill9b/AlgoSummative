@@ -18,8 +18,11 @@ void cGraph::addEdge(int _v, int _w)
 	adjList[_w].push_back(_v); //Add v to w's list of edges
 }
 
-void cGraph::BFS(int s)
+std::string cGraph::BFS(int s)
 {
+	std::string strBFS;
+	std::string strNodeToAdd; //String stores current node to add to strBFS
+
 	//Mark all vertices as not visited 
 	bool* verticesVisited = new bool[iVertices];
 	for (int i = 0; i < iVertices; i++)
@@ -40,7 +43,24 @@ void cGraph::BFS(int s)
 	while (!Queue.empty())
 	{
 		s = Queue.front(); //Make sure current visited vertex is front of queue
-		cout << s << " "; //Output vertex
+		//cout << s << " "; //Output vertex
+
+		//Combine all into string here and return at the end
+		strNodeToAdd = std::to_string(s);
+
+		bool bOneTimeUse = true;
+		if (bOneTimeUse)
+		{
+			strBFS = strNodeToAdd; //Set it once to start
+			bOneTimeUse = false;
+		}
+		else
+		{
+			strBFS = strBFS + ", " + strNodeToAdd; //Updates return string with current node every loop
+		}
+		
+		
+
 		Queue.pop_front(); //Dequeue current visited vertex
 
 		//Get all adjecent vertices of matrix just dequeued
@@ -55,7 +75,10 @@ void cGraph::BFS(int s)
 				Queue.push_back(*Iterator);
 			}
 		}
+		
 	}
+	//return string version of output
+	return (strBFS);
 }
 
 void cGraph::DFSUtil(int v, bool _verticesVisited[])

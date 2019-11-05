@@ -42,14 +42,21 @@ std::string ToString(const T& _value)
 	return (theStream.str());
 }
 
-template<typename T>
-std::wstring ToWideString(const T& _value)
+template<typename T> std::wstring ToWideString(const T& _value)
 {
 	std::wstringstream theStream;
 	theStream << _value << std::ends;
 	return (theStream.str());
 }
 
+int StringToWString(std::wstring& ws, const std::string& s)
+{
+	std::wstring wsTmp(s.begin(), s.end());
+
+	ws = wsTmp;
+
+	return 0;
+}
 //Converts wchar_t array to std::string
 std::string ToNarrow(const wchar_t* s, char dfault = '?', const std::locale& loc = std::locale())
 {
@@ -61,9 +68,6 @@ std::string ToNarrow(const wchar_t* s, char dfault = '?', const std::locale& loc
 	return stm.str();
 }
 
-
-
-
 //Change return value to string
 std::string ReadFromEditBox(HWND _hDlg, int _iResourceID)
 {
@@ -72,8 +76,6 @@ std::string ReadFromEditBox(HWND _hDlg, int _iResourceID)
 	//char _pcValue[3];
 	ZeroMemory(_pcValue, 10);
 	GetDlgItemText(_hDlg, _iResourceID, _pcValue, 10);
-
-
 
 	_return = ToNarrow(_pcValue);
 
@@ -88,6 +90,13 @@ std::string ReadFromEditBox(HWND _hDlg, int _iResourceID)
 void WriteToEditBox(HWND _hDlg, int _iResourceID, float _fValue)
 {
 	std::wstring _strValue = ToWideString(_fValue);
+	SetDlgItemText(_hDlg, _iResourceID, _strValue.c_str());
+}
+
+void WriteToEditBoxString(HWND _hDlg, int _iResourceID, std::string _strInput)
+{
+	std::wstring _strValue;
+	StringToWString(_strValue, _strInput);
 	SetDlgItemText(_hDlg, _iResourceID, _strValue.c_str());
 }
 

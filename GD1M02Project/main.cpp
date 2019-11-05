@@ -136,21 +136,22 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 		{
 		case IDC_BUTTON1:
 		{
-			std::string strEdges = ReadFromEditBox(_hwnd, IDC_EDIT2);
+			std::string strEdges; //= ReadFromEditBox(_hwnd, IDC_EDIT2);
 			int iFirst, iSecond;
 
 			for (int i = 0; i < iAmountOfEdges; i++)
 			{
 				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
 				iFirst = std::atoi(&strEdges[0]);
-				iSecond = std::atoi(&strEdges[1]);
-				
+				iSecond = std::atoi(&strEdges[2]);
+				Graph.addEdge(iFirst, iSecond);
 			}
 			break;
 		}
-		case IDC_BUTTON6:
+		case IDC_BUTTON6: //BFS
 		{
-
+			std::string string = Graph.BFS(0);
+			WriteToEditBoxString(_hwnd, IDC_EDIT24, Graph.BFS(0));
 		}
 		default:
 			break;
