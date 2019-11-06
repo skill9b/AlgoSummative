@@ -149,12 +149,13 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 				Graph->addEdge(iFirst, iSecond);
 			}
 			string = Graph->BFS(0);
+			WriteToEditBoxString(_hwnd, IDC_EDIT24, string);
 			break;
 		}
 		case IDC_BUTTON6: //BFS
 		{
 			
-			WriteToEditBoxString(_hwnd, IDC_EDIT24, string);
+			
 			break;
 		}
 		default:
