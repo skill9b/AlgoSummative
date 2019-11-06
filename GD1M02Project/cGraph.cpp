@@ -48,7 +48,7 @@ std::string cGraph::BFS(int s)
 		//Combine all into string here and return at the end
 		strNodeToAdd = std::to_string(s);
 
-		bool bOneTimeUse = true;
+		static bool bOneTimeUse = true;
 		if (bOneTimeUse)
 		{
 			strBFS = strNodeToAdd; //Set it once to start
@@ -59,7 +59,7 @@ std::string cGraph::BFS(int s)
 			strBFS = strBFS + ", " + strNodeToAdd; //Updates return string with current node every loop
 		}
 		
-
+		Queue.pop_front(); //Dequeue current visited vertex
 
 		//Get all adjecent vertices of matrix just dequeued
 		for (Iterator = adjList[s].begin(); Iterator != adjList[s].end(); Iterator++)
@@ -74,7 +74,7 @@ std::string cGraph::BFS(int s)
 			}
 		}
 
-		Queue.pop_front(); //Dequeue current visited vertex
+		
 
 	}
 

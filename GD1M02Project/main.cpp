@@ -128,6 +128,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 	int iEdges[20] = { IDC_EDIT2, IDC_EDIT3, IDC_EDIT4, IDC_EDIT5, IDC_EDIT6, IDC_EDIT7, IDC_EDIT8, IDC_EDIT9, IDC_EDIT10, IDC_EDIT11,
 					   IDC_EDIT12, IDC_EDIT13, IDC_EDIT14, IDC_EDIT15, IDC_EDIT16, IDC_EDIT17, IDC_EDIT18, IDC_EDIT19, IDC_EDIT20, IDC_EDIT21 };
 
+	std::string string;
 	static float _value;
 	switch (_msg)
 	{
@@ -147,12 +148,13 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 				iSecond = std::atoi(&strEdges[2]);
 				Graph->addEdge(iFirst, iSecond);
 			}
+			string = Graph->BFS(0);
 			break;
 		}
 		case IDC_BUTTON6: //BFS
 		{
-			std::string string = Graph->BFS(0);
-			WriteToEditBoxString(_hwnd, IDC_EDIT24, Graph->BFS(0));
+			
+			WriteToEditBoxString(_hwnd, IDC_EDIT24, string);
 			break;
 		}
 		default:
