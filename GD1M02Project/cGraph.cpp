@@ -86,7 +86,21 @@ void cGraph::DFSUtil(int v, bool _verticesVisited[])
 {
 	//Mark current node as visited and output
 	_verticesVisited[v] = true;
-	cout << v << " ";
+	//cout << v << " ";
+
+	m_strCurrentNode = std::to_string(v);
+
+	static bool bOneTimeUse = true;
+	if (bOneTimeUse)
+	{
+		m_strDFSOutput = m_strCurrentNode; //Set it once to start
+		bOneTimeUse = false;
+	}
+	else
+	{
+		m_strDFSOutput = m_strDFSOutput + ", " + m_strCurrentNode; //Updates return string with current node every loop
+	}
+
 
 	//Call recursive for all adjacent vertices using iterator
 	list<int>::iterator Iterator;
@@ -97,10 +111,9 @@ void cGraph::DFSUtil(int v, bool _verticesVisited[])
 			DFSUtil(*Iterator, _verticesVisited);
 		}
 	}
-
 }
 
-void cGraph::DFS(int v)
+std::string cGraph::DFS(int v)
 {
 	//Mark all vertices as not visited 
 	bool* verticesVisited = new bool[iVertices];
@@ -111,4 +124,7 @@ void cGraph::DFS(int v)
 
 	//Call recursive function to output traversal
 	DFSUtil(v, verticesVisited);
+
+	
+	return (m_strDFSOutput);
 }

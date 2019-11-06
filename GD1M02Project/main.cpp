@@ -128,7 +128,9 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 	int iEdges[20] = { IDC_EDIT2, IDC_EDIT3, IDC_EDIT4, IDC_EDIT5, IDC_EDIT6, IDC_EDIT7, IDC_EDIT8, IDC_EDIT9, IDC_EDIT10, IDC_EDIT11,
 					   IDC_EDIT12, IDC_EDIT13, IDC_EDIT14, IDC_EDIT15, IDC_EDIT16, IDC_EDIT17, IDC_EDIT18, IDC_EDIT19, IDC_EDIT20, IDC_EDIT21 };
 
-	std::string string;
+	std::string strBFSOutput;
+	std::string strDFSOutput;
+
 	static float _value;
 	switch (_msg)
 	{
@@ -138,24 +140,96 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 		{
 		case IDC_BUTTON1:	// Input Edges
 		{
+			if (iAmountOfEdges > 20)
+			{
+				MessageBox(_hwnd, ToWideString("Too Many edges").c_str(), L"Alert", MB_OK);
+				for (int i = 0; i < 20; i++)
+				{
+					WriteToEditBoxString(_hwnd, iEdges[i], "ERROR");
+				}
+				WriteToEditBoxString(_hwnd, IDC_EDIT22, "ERROR");
+				break;
+			}
+
+			//Check boxes to make sure they have correct formatting "1,2" number colon number here
+			//for
+
+
+
+
+
+
+
+
 			std::string strEdges; //= ReadFromEditBox(_hwnd, IDC_EDIT2);
 			int iFirst, iSecond;
 
-			for (int i = 0; i < iAmountOfEdges; i++)
+			for (int i = 0; i < 20; i++)
 			{
-				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
-				iFirst = std::atoi(&strEdges[0]);
-				iSecond = std::atoi(&strEdges[2]);
-				Graph->addEdge(iFirst, iSecond);
+				if (i < iAmountOfEdges)
+				{
+					strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
+					iFirst = std::atoi(&strEdges[0]);
+					iSecond = std::atoi(&strEdges[2]);
+					Graph->addEdge(iFirst, iSecond);
+				}
+				else
+				{
+					WriteToEditBoxString(_hwnd, iEdges[i], "");
+				}
 			}
-			string = Graph->BFS(0);
-			WriteToEditBoxString(_hwnd, IDC_EDIT24, string);
+			strBFSOutput = Graph->BFS(0);
+			WriteToEditBoxString(_hwnd, IDC_EDIT24, strBFSOutput);
+			//strBFSOutput = Graph->DFS(0);
+			//WriteToEditBoxString(_hwnd, IDC_EDIT24, strDFSOutput);
+
 			break;
 		}
 		case IDC_BUTTON6: //BFS
 		{
 			
 			
+			break;
+		}
+
+		case IDC_BUTTON7:
+		{
+			std::string strEdges;
+			int iFirst, iSecond;
+
+			if (iAmountOfEdges > 20)
+			{
+				MessageBox(_hwnd, ToWideString("Too Many edges").c_str(), L"Alert", MB_OK);
+				for (int i = 0; i < 20; i++)
+				{
+					WriteToEditBoxString(_hwnd, iEdges[i], "ERROR");
+				}
+				break;
+			}
+
+
+			//Check boxes to make sure they have correct formatting "1,2" number colon number here
+			//for
+
+
+
+
+			for (int i = 0; i < 20; i++)
+			{
+				if (i < iAmountOfEdges)
+				{
+					strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
+					iFirst = std::atoi(&strEdges[0]);
+					iSecond = std::atoi(&strEdges[2]);
+					Graph->addEdge(iFirst, iSecond);
+				}
+				else
+				{
+					WriteToEditBoxString(_hwnd, iEdges[i], " ");
+				}
+			}
+			strBFSOutput = Graph->DFS(0);
+			WriteToEditBoxString(_hwnd, IDC_EDIT25, strBFSOutput);
 			break;
 		}
 		default:
@@ -303,7 +377,6 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 				DispatchMessage(&msg);
 			}
 		}
-
 	}
 
 	// Return to Windows like this...
