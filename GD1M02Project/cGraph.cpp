@@ -6,8 +6,15 @@ cGraph::cGraph(int _v)
 	adjList = new list<int> [_v];
 }
 
+void cGraph::resetVertices(int _v)
+{
+	this->iVertices = _v;
+	adjList = new list<int>[_v];
+}
+
 cGraph::~cGraph()
 {
+	delete adjList;
 }
 
 void cGraph::addEdge(int _v, int _w)
@@ -82,23 +89,36 @@ std::string cGraph::BFS(int s)
 	return (strBFS);
 }
 
+void cGraph::clearStrings()
+{
+	m_strDFSOutput = "";
+	m_strBFSOutput = "";
+	m_strDFSOutput.clear();
+	m_strBFSOutput.clear();
+
+	m_strDFSCurrentNode = "";
+	m_strBFSCurrentNode = "";
+	m_strDFSCurrentNode.clear();
+	m_strBFSCurrentNode.clear();
+}
+
 void cGraph::DFSUtil(int v, bool _verticesVisited[])
 {
 	//Mark current node as visited and output
 	_verticesVisited[v] = true;
 	//cout << v << " ";
 
-	m_strCurrentNode = std::to_string(v);
+	m_strDFSCurrentNode = std::to_string(v);
 
 	static bool bOneTimeUse = true;
 	if (bOneTimeUse)
 	{
-		m_strDFSOutput = m_strCurrentNode; //Set it once to start
+		m_strDFSOutput = m_strDFSCurrentNode; //Set it once to start
 		bOneTimeUse = false;
 	}
 	else
 	{
-		m_strDFSOutput = m_strDFSOutput + ", " + m_strCurrentNode; //Updates return string with current node every loop
+		m_strDFSOutput = m_strDFSOutput + ", " + m_strDFSCurrentNode; //Updates return string with current node every loop
 	}
 
 

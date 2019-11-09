@@ -21,6 +21,7 @@
 #include "cGraph.h"
 #include "utils.h"
 #include "resource.h"
+#include <sstream>
 
 #define WINDOW_CLASS_NAME L"WINCLASS1"
 #define BFSDFS_BUTTON_TEXT L"BFS & DFS"
@@ -138,9 +139,106 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 	{
 		switch (LOWORD(_wparam))
 		{
-		case IDC_BUTTON1:	// Input Edges
+		case IDC_BUTTON6:	// BFS
 		{
-			if (iAmountOfEdges > 20)
+			std::string strEdges;
+			int iFirst = 0, iSecond = 0;
+			int iCheck = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
+			Graph->resetVertices(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
+
+			if ((iCheck == 0))
+			{
+				MessageBox(_hwnd, ToWideString("Invalid amount of nodes").c_str(), L"Alert", MB_OK);
+				break;
+			}
+			
+			iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
+			if (iAmountOfEdges > 21) //If user inputs more than 20 for amount of edges 
+			{
+				MessageBox(_hwnd, ToWideString("Too Many edges").c_str(), L"Alert", MB_OK);
+				for (int i = 0; i < 20; i++)
+				{
+					WriteToEditBoxString(_hwnd, iEdges[i], "ERROR");
+				}
+				WriteToEditBoxString(_hwnd, IDC_EDIT22, "ERROR");
+				break;
+			}
+			
+			//Check boxes to make sure they have correct formatting "1,2" number colon number here
+			int iColons = 0;
+			for (int i = 0; i < iAmountOfEdges; i++)
+			{
+				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
+				
+				for (int i = 0; i < strEdges.size(); i++)
+				{
+					if (strEdges[i] == 44)
+					{
+						iColons++;
+					}
+				}
+				
+			}
+			if (iColons == 0)
+			{
+				MessageBox(_hwnd, ToWideString("Mising colon/s").c_str(), L"Alert", MB_OK);
+				break;
+			}
+
+			//Reading edges into graph
+			for (int i = 0; i < iAmountOfEdges; i++)
+			{
+				//if (i < iAmountOfEdges)
+				//{
+					strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
+					stringstream ss1(strEdges);
+
+					//iFirst = std::atoi(&strEdges[0]);
+					//iSecond = std::atoi(&strEdges[2]);
+
+					std::string value;
+
+					int iCount = 0;
+					while (getline(ss1, value, ','))
+					{
+						if (iCount == 0)
+						{
+							iFirst = std::stoi(value);
+							iCount++;
+						}
+						else if (iCount == 1)
+						{
+							iSecond = std::stoi(value);
+							iCount++;
+						}
+					}
+					Graph->addEdge(iFirst, iSecond);
+				//}
+				//else
+				//{
+				//	WriteToEditBoxString(_hwnd, iEdges[i], " ");
+				//}
+			}
+			strBFSOutput = Graph->BFS(0);
+			WriteToEditBoxString(_hwnd, IDC_EDIT24, strBFSOutput);
+			break;
+		}
+
+		case IDC_BUTTON7: //DFS button
+		{
+			Graph->resetVertices(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
+			int iCheck = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
+			std::string strEdges;
+			int iFirst, iSecond;
+
+			if ((iCheck == 0))
+			{
+				MessageBox(_hwnd, ToWideString("Invalid amount of nodes").c_str(), L"Alert", MB_OK);
+				break;
+			}
+
+			iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
+			if (iAmountOfEdges > 21) //If user inputs more than 20 for amount of edges 
 			{
 				MessageBox(_hwnd, ToWideString("Too Many edges").c_str(), L"Alert", MB_OK);
 				for (int i = 0; i < 20; i++)
@@ -152,75 +250,53 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			}
 
 			//Check boxes to make sure they have correct formatting "1,2" number colon number here
-			//for
-
-
-
-
-
-
-
-
-			std::string strEdges; //= ReadFromEditBox(_hwnd, IDC_EDIT2);
-			int iFirst, iSecond;
-
-			for (int i = 0; i < 20; i++)
+			int iColons = 0;
+			for (int i = 0; i < iAmountOfEdges; i++)
 			{
-				if (i < iAmountOfEdges)
+				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
+
+				for (int i = 0; i < strEdges.size(); i++)
 				{
-					strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
-					iFirst = std::atoi(&strEdges[0]);
-					iSecond = std::atoi(&strEdges[2]);
-					Graph->addEdge(iFirst, iSecond);
+					if (strEdges[i] == 44)
+					{
+						iColons++;
+					}
 				}
-				else
-				{
-					WriteToEditBoxString(_hwnd, iEdges[i], "");
-				}
+
 			}
-			strBFSOutput = Graph->BFS(0);
-			WriteToEditBoxString(_hwnd, IDC_EDIT24, strBFSOutput);
-			//strBFSOutput = Graph->DFS(0);
-			//WriteToEditBoxString(_hwnd, IDC_EDIT24, strDFSOutput);
-
-			break;
-		}
-		case IDC_BUTTON6: //BFS
-		{
-			
-			
-			break;
-		}
-
-		case IDC_BUTTON7:
-		{
-			std::string strEdges;
-			int iFirst, iSecond;
-
-			if (iAmountOfEdges > 20)
+			if (iColons == 0)
 			{
-				MessageBox(_hwnd, ToWideString("Too Many edges").c_str(), L"Alert", MB_OK);
-				for (int i = 0; i < 20; i++)
-				{
-					WriteToEditBoxString(_hwnd, iEdges[i], "ERROR");
-				}
+				MessageBox(_hwnd, ToWideString("Mising colon/s").c_str(), L"Alert", MB_OK);
 				break;
 			}
 
 
-			//Check boxes to make sure they have correct formatting "1,2" number colon number here
-			//for
-
-
-
-
 			for (int i = 0; i < 20; i++)
 			{
 				if (i < iAmountOfEdges)
 				{
 					strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
+					stringstream ss1(strEdges);
+
 					iFirst = std::atoi(&strEdges[0]);
 					iSecond = std::atoi(&strEdges[2]);
+
+					std::string value;
+
+					int iCount = 0;
+					while (getline(ss1, value, ','))
+					{
+						if (iCount == 0)
+						{
+							iFirst = std::stoi(value);
+							iCount++;
+						}
+						else if (iCount == 1)
+						{
+							iSecond = std::stoi(value);
+							iCount++;
+						}
+					}
 					Graph->addEdge(iFirst, iSecond);
 				}
 				else
@@ -228,6 +304,9 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 					WriteToEditBoxString(_hwnd, iEdges[i], " ");
 				}
 			}
+
+
+
 			strBFSOutput = Graph->DFS(0);
 			WriteToEditBoxString(_hwnd, IDC_EDIT25, strBFSOutput);
 			break;
@@ -247,6 +326,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 	default:
 		break;
 	}
+	Graph->clearStrings();
 	return FALSE;
 }
 
@@ -383,4 +463,19 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 	return (static_cast<int>(msg.wParam));
 }
 
+/*
+for (int i = 0; i < 20; i++)
+{
+	if (i < iAmountOfEdges)
+	{
+		strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
+		iFirst = std::atoi(&strEdges[0]);
+		iSecond = std::atoi(&strEdges[2]);
+		Graph->addEdge(iFirst, iSecond);
+	}
+	else
+	{
+		WriteToEditBoxString(_hwnd, iEdges[i], "");
+	}
+}*/
 
