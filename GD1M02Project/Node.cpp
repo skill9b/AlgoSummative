@@ -1,3 +1,18 @@
+//
+// Bachelor of Software Engineering
+// Media Design School
+// Auckland
+// New Zealand
+//
+// (c) 2018 Media Design School
+//
+// File Name	: Node.cpp
+// Description	: This file contains the Node class
+// Author		: Jay Patel, Vivian Xu
+// Mail			: jay.pat8646@mediadesign.school.nz ,vivian.xu9501@mediadesign.school.nz
+//
+
+
 #include "Node.h"
 
 Node::Node() {

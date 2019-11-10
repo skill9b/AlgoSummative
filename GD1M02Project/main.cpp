@@ -6,13 +6,13 @@
 //
 // (c) 2018 Media Design School
 //
-// File Name	: 
-// Description	: 
+// File Name	: main.cpp
+// Description	: This programs runs dialogues for BFS, DFS and the A* algorithm.
 // Author		: Jay Patel, Vivian Xu
 // Mail			: jay.pat8646@mediadesign.school.nz ,vivian.xu9501@mediadesign.school.nz
 //
 
-//Hi
+
 #define WIN32_LEAN_AND_MEAN
 
 #include <windows.h>   // Include all the windows headers.

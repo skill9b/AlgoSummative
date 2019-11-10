@@ -1,4 +1,20 @@
 #pragma once
+
+//
+// Bachelor of Software Engineering
+// Media Design School
+// Auckland
+// New Zealand
+//
+// (c) 2018 Media Design School
+//
+// File Name	: cGraph.h
+// Description	: This file contains the header file for the cGraph class (for BFS and DFS)
+// Author		: Jay Patel, Vivian Xu
+// Mail			: jay.pat8646@mediadesign.school.nz ,vivian.xu9501@mediadesign.school.nz
+//
+
+
 #include<iostream> 
 #include <list> 
 #include <string>

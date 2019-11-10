@@ -1,3 +1,19 @@
+//
+// Bachelor of Software Engineering
+// Media Design School
+// Auckland
+// New Zealand
+//
+// (c) 2018 Media Design School
+//
+// File Name	: cGraph.cpp
+// Description	: This file contains the cGraph class for BFS and DFS
+// Author		: Jay Patel, Vivian Xu
+// Mail			: jay.pat8646@mediadesign.school.nz ,vivian.xu9501@mediadesign.school.nz
+//
+
+
+
 #include "cGraph.h"
 
 cGraph::cGraph(int _v)

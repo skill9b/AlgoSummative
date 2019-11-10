@@ -1,4 +1,20 @@
 #pragma once
+//
+// Bachelor of Software Engineering
+// Media Design School
+// Auckland
+// New Zealand
+//
+// (c) 2018 Media Design School
+//
+// File Name	: Pathfinding.h
+// Description	: This file contains the header class for the Pathfinding class for A* algorithm
+// Author		: Jay Patel, Vivian Xu
+// Mail			: jay.pat8646@mediadesign.school.nz ,vivian.xu9501@mediadesign.school.nz
+//
+
+
+
 #include <vector>
 #include <set>
 
