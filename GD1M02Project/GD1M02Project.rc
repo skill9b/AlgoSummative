@@ -313,12 +313,13 @@ BEGIN
     CONTROL         "",IDC_CHECK198,"Button",BS_AUTO3STATE | WS_TABSTOP,336,152,16,10
     CONTROL         "",IDC_CHECK199,"Button",BS_AUTO3STATE | WS_TABSTOP,350,152,16,10
     CONTROL         "",IDC_CHECK200,"Button",BS_AUTO3STATE | WS_TABSTOP,364,152,16,10
-    PUSHBUTTON      "Compute A* Path",IDC_BUTTON1,180,220,78,14
+    PUSHBUTTON      "Clear",IDC_BUTTON2,288,223,78,14
     LTEXT           "1. Check two boxes (Source and Destination)",IDC_STATIC,56,173,148,13
     LTEXT           "2. Check as many boxes as Obstacles as required",IDC_STATIC,230,173,184,8
     LTEXT           "3. Hit ""Compute A*"" to generate path",IDC_STATIC,161,203,135,8
     CTEXT           "Obstacle(s) and Output",IDC_STATIC,265,23,86,16,WS_BORDER
     CTEXT           "Source and Destination",IDC_STATIC,89,23,86,16,WS_BORDER
+    PUSHBUTTON      "Compute A* Path",IDC_BUTTON1,184,224,78,14
 END
 
 

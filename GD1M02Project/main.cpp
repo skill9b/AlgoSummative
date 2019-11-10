@@ -394,6 +394,22 @@ BOOL CALLBACK AStarDlgProc(HWND _hwnd,
 				}
 				break;
 			}
+			case IDC_BUTTON2:	// Clears all grids, resets A* algorithm
+			{
+				bPathCalculated = false;
+
+				for (int i = 0; i < 4; i++) {
+					iSourceDest[i] = 0;
+				}
+
+				for (int i = 0; i < 10; i++) {
+					for (int j = 0; j < 10; j++) {
+						CheckDlgButton(_hwnd, g_sourceDestinationGrid[i][j], BST_UNCHECKED);
+						CheckDlgButton(_hwnd, g_obstacleGrid[i][j], BST_UNCHECKED);
+					}
+				}
+				break;
+			}
 
 		}
 		break;
@@ -401,6 +417,22 @@ BOOL CALLBACK AStarDlgProc(HWND _hwnd,
 	case WM_CLOSE:
 	{
 		ShowWindow(_hwnd, SW_HIDE);
+
+		// Clears all data
+		bPathCalculated = false;
+
+		for (int i = 0; i < 4; i++) {
+			iSourceDest[i] = 0;
+		}
+
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				CheckDlgButton(_hwnd, g_sourceDestinationGrid[i][j], BST_UNCHECKED);
+				CheckDlgButton(_hwnd, g_obstacleGrid[i][j], BST_UNCHECKED);
+			}
+		}
+		break;
+
 		return TRUE;
 		break;
 	}

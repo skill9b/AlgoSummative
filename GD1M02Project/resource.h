@@ -68,7 +68,7 @@
 #define IDC_CHECK28                     1065
 #define IDC_CHECK29                     1066
 #define IDC_CHECK30                     1067
-#define IDC_MFCBUTTON1                  1068
+#define IDC_BUTTON2                     1069
 #define IDC_CHECK31                     1078
 #define IDC_CHECK32                     1079
 #define IDC_CHECK33                     1080
@@ -246,7 +246,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        106
 #define _APS_NEXT_COMMAND_VALUE         40003
-#define _APS_NEXT_CONTROL_VALUE         1069
+#define _APS_NEXT_CONTROL_VALUE         1070
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

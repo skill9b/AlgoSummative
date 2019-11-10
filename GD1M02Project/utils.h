@@ -204,6 +204,16 @@ void CheckSourceDestinationGrid(HWND _hDlg, int _iSourceDest[4]) {
 			}
 		}
 	}
+
+	// loop through obstacle grid, if greyed out and not a source or destination, set to unchecked
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			if ((IsDlgButtonChecked(_hDlg, g_obstacleGrid[i][j]) == BST_INDETERMINATE) && (IsDlgButtonChecked(_hDlg, g_sourceDestinationGrid[i][j]) != BST_CHECKED))
+			{
+				CheckDlgButton(_hDlg, g_obstacleGrid[i][j], BST_UNCHECKED);
+			}
+		}
+	}
 }
 
 
