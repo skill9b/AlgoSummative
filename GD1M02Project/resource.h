@@ -4,10 +4,6 @@
 //
 #define IDD_DialogBFSDFS                101
 #define IDD_DialogAStar                 102
-#define IDR_MENU                        103
-#define ID_BFSDFS                       104
-#define ID_ASTAR                        105
-#define ID_EXIT                         106
 #define BFSDFS_BUTTON                   1001
 #define IDC_EDIT1                       1001
 #define ASTAR_BUTTON                    1002

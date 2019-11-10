@@ -62,7 +62,17 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 			// Simply validate the window.
 			hdc = BeginPaint(_hwnd, &ps);
 
-			// You would do all your painting here...
+			RECT instructionRect = { 80,20,500,50};
+			LPRECT pInstructionRect = &instructionRect;
+
+			// Instruction text
+			DrawText(
+				hdc,
+				L"Select one of the following:",
+				28,
+				pInstructionRect,
+				DT_CENTER
+			);
 
 			EndPaint(_hwnd, &ps);
 
@@ -74,21 +84,6 @@ LRESULT CALLBACK WindowProc(HWND _hwnd,
 		{
 			switch (LOWORD(_wparam))
 			{
-				case ID_EXIT:
-				{
-					PostQuitMessage(0);
-					break;
-				}
-				case ID_BFSDFS:
-				{
-					ShowWindow(g_hDlgBFSDFS, SW_SHOWNORMAL);
-					break;
-				}
-				case ID_ASTAR:
-				{
-					ShowWindow(g_hDlgAStar, SW_SHOWNORMAL);
-					break;
-				}
 				case BFSDFS_BUTTON:
 				{
 					ShowWindow(g_hDlgBFSDFS, SW_SHOWNORMAL);
@@ -462,7 +457,7 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 	winclass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	winclass.hCursor = LoadCursor(NULL, IDC_ARROW);
 	winclass.hbrBackground =
-		static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
+		static_cast<HBRUSH>(GetStockObject( LTGRAY_BRUSH ));
 	winclass.lpszMenuName = NULL;
 	winclass.lpszClassName = WINDOW_CLASS_NAME;
 	winclass.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
@@ -473,16 +468,13 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 		return (0);
 	}
 
-	//Load the Menu
-	g_hMenu = LoadMenu(_hInstance, MAKEINTRESOURCE(IDR_MENU));
-
 	// Create the window
 	hwnd = CreateWindowEx(NULL, // Extended style.
 		WINDOW_CLASS_NAME,      // Class.
-		L"Your Basic Window",   // Title.
+		L"AlgoSummative Final Project || Jay & Vivian ",   // Title.
 		WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-		350, 200,                    // Initial x,y.
-		400, 500,                // Initial width, height.
+		420, 200,                    // Initial x,y.
+		600, 200,                // Initial width, height.
 		NULL,                   // Handle to parent.
 		g_hMenu,                   // Handle to menu.
 		_hInstance,             // Instance of this application.
@@ -494,18 +486,18 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 	}
 
 	BfsDfsButton = CreateWindowEx(
-		0,							// Extended possibilities for variation
-		L"BUTTON",					// Class name
-		BFSDFS_BUTTON_TEXT,			// Button text
-		WS_CHILD | WS_VISIBLE,		// Child to the window, visible
-		55,							// x co-ordinate
-		55,							// y co-ordinate		
-		80,							// Width
-		18,							// Height
-		hwnd,						// Button is child to our window
-		(HMENU)BfsDfsButton,		
-		NULL,						// Program instance handler
-		NULL						// No Window creation data
+		0,                            // Extended possibilities for variation
+		L"BUTTON",                    // Class name
+		BFSDFS_BUTTON_TEXT,            // Button text
+		WS_CHILD | WS_VISIBLE,        // Child to the window, visible
+		240,                            // x co-ordinate
+		50,                            // y co-ordinate        
+		100,                            // Width
+		30,                            // Height
+		hwnd,                        // Button is child to our window
+		(HMENU)BFSDFS_BUTTON,
+		NULL,                        // Program instance handler
+		NULL                        // No Window creation data
 	);
 
 	AStarButton = CreateWindowEx(
@@ -513,12 +505,12 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 		L"BUTTON",
 		ASTAR_BUTTON_TEXT,
 		WS_CHILD | WS_VISIBLE,
-		55,
-		75,
-		80,
-		18,
+		240,
+		85,
+		100,
+		30,
 		hwnd,
-		(HMENU)AStarButton,
+		(HMENU)ASTAR_BUTTON,
 		NULL,
 		NULL
 	);

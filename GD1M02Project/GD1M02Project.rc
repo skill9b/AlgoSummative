@@ -352,22 +352,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Menu
-//
-
-IDR_MENU MENU
-BEGIN
-    POPUP "Algorithms"
-    BEGIN
-        MENUITEM "BFS & DFS",                   ID_BFSDFS
-        MENUITEM "A Star",                      ID_ASTAR
-    END
-    MENUITEM "Exit",                        ID_EXIT
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // AFX_DIALOG_LAYOUT
 //
 
