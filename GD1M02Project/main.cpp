@@ -18,10 +18,13 @@
 #include <windows.h>   // Include all the windows headers.
 #include <windowsx.h>  // Include useful macros.
 #include <string>
-#include "cGraph.h"
+#include <sstream>
+
 #include "utils.h"
 #include "resource.h"
-#include <sstream>
+#include "cGraph.h"
+#include "Pathfinding.h"
+#include "Node.h"
 
 #define WINDOW_CLASS_NAME L"WINCLASS1"
 #define BFSDFS_BUTTON_TEXT L"BFS & DFS"
@@ -30,6 +33,9 @@
 HMENU g_hMenu;
 HWND g_hDlgBFSDFS, g_hDlgAStar;		// Dialog handles
 HWND BfsDfsButton, AStarButton;
+
+int iSourceDest[4] = { -1, -1, -1, -1 };
+bool bPathCalculated = false;
 
 
 LRESULT CALLBACK WindowProc(HWND _hwnd,
@@ -266,7 +272,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			}
 			if (iColons == 0)
 			{
-				MessageBox(_hwnd, ToWideString("Mising colon/s").c_str(), L"Alert", MB_OK);
+				MessageBox(_hwnd, ToWideString("Missing colon/s").c_str(), L"Alert", MB_OK);
 				break;
 			}
 
@@ -335,9 +341,63 @@ BOOL CALLBACK AStarDlgProc(HWND _hwnd,
 	WPARAM _wparam,
 	LPARAM _lparam)
 {
+	if (bPathCalculated == false) {
+		// Constantly check Source & Destination grid and update Obstacle grid until path calculated
+		CheckSourceDestinationGrid(_hwnd, iSourceDest);
+	}
 
 	switch (_msg)
 	{
+	case WM_COMMAND:
+	{
+		switch (LOWORD(_wparam))
+		{
+			case IDC_BUTTON1:	// Compute A* Path
+			{
+				Pathfinding* path = new Pathfinding(iSourceDest[0], iSourceDest[1], iSourceDest[2], iSourceDest[3]);
+
+				ReadObstacleGrid(_hwnd, path);
+
+				path->FindPath();
+				Node* endNode = path->GetEndNode();
+					
+
+				// Display grid output...
+				if (endNode == nullptr)
+				{
+					MessageBox(_hwnd, ToWideString("There is no valid path!").c_str(), L"Alert", MB_OK);
+				}
+				else
+				{
+					bPathCalculated = true;
+
+					Node* currentNode = endNode;
+					std::set<Node*>* obstacleList = path->GetObstacleList();
+					std::set<Node*>::iterator it = obstacleList->begin();
+
+					// Set all Obstacle boxes as grey
+					while (it != obstacleList->end()) {
+						CheckDlgButton(_hwnd, g_obstacleGrid[(*it)->GetX()][(*it)->GetY()], BST_INDETERMINATE);
+						it++;
+					}
+
+					// Set Source and Destination as ticked
+					 CheckDlgButton(_hwnd, g_obstacleGrid[iSourceDest[0]][iSourceDest[1]], BST_CHECKED);
+					 CheckDlgButton(_hwnd, g_obstacleGrid[iSourceDest[2]][iSourceDest[3]], BST_CHECKED);
+
+					// Check all path boxes 
+					while (currentNode->GetPreviousNode() != nullptr) {
+						CheckDlgButton(_hwnd, g_obstacleGrid[currentNode->GetX()][currentNode->GetY()], BST_CHECKED);
+						currentNode = currentNode->GetPreviousNode();
+					}
+
+				}
+				break;
+			}
+
+		}
+		break;
+	}
 	case WM_CLOSE:
 	{
 		ShowWindow(_hwnd, SW_HIDE);
