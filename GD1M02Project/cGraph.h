@@ -28,5 +28,6 @@ public:
 	void clearStrings();
 	void DFSUtil(int v, bool visited[]); //Revursive function used by dfs search
 	std::string DFS(int v); //Dfs traversal of vertices, from source v?
+	bool m_bOneTimeUse;
 };
 
