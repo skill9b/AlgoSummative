@@ -142,6 +142,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 		{
 		case IDC_BUTTON6:	// BFS
 		{
+			strBFSOutput = "";
 			std::string strEdges;
 			int iFirst = 0, iSecond = 0;
 			int iCheck = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
@@ -154,16 +155,17 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			}
 			
 			iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
-			if (iAmountOfEdges > 21) //If user inputs more than 20 for amount of edges 
+			if ((iAmountOfEdges >= 21) || (iAmountOfEdges <= 0)) //If user inputs more than 20 for amount of edges 
 			{
-				MessageBox(_hwnd, ToWideString("Too Many edges").c_str(), L"Alert", MB_OK);
-				for (int i = 0; i < 20; i++)
-				{
-					WriteToEditBoxString(_hwnd, iEdges[i], "ERROR");
-				}
-				WriteToEditBoxString(_hwnd, IDC_EDIT22, "ERROR");
+				MessageBox(_hwnd, ToWideString("Invalid amount of edges").c_str(), L"Alert", MB_OK);
+			//for (int i = 0; i < 20; i++)
+				//{
+				//	WriteToEditBoxString(_hwnd, iEdges[i], "ERROR");
+				//}
+				//WriteToEditBoxString(_hwnd, IDC_EDIT22, "ERROR");
 				break;
 			}
+
 			
 			//Check boxes to make sure they have correct formatting "1,2" number colon number here
 			int iColons = 0;
@@ -171,7 +173,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			{
 				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
 				
-				for (int i = 0; i < strEdges.size(); i++)
+				for (int i = 0; i < strEdges.size(); i++) //Use j
 				{
 					if (strEdges[i] == 44)
 					{
@@ -222,11 +224,13 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			}
 			strBFSOutput = Graph->BFS(0);
 			WriteToEditBoxString(_hwnd, IDC_EDIT24, strBFSOutput);
+			Graph->clearStrings();
 			break;
 		}
 
 		case IDC_BUTTON7: //DFS button
 		{
+			strDFSOutput = "";
 			Graph->resetVertices(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
 			int iCheck = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
 			std::string strEdges;
@@ -239,15 +243,15 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			}
 
 			iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
-			if (iAmountOfEdges > 21) //If user inputs more than 20 for amount of edges 
+			if ((iAmountOfEdges >= 21) || (iAmountOfEdges <= 0)) //If user inputs more than 20 for amount of edges 
 			{
-				MessageBox(_hwnd, ToWideString("Too Many edges").c_str(), L"Alert", MB_OK);
-				for (int i = 0; i < 20; i++)
-				{
-					WriteToEditBoxString(_hwnd, iEdges[i], "ERROR");
-				}
-				WriteToEditBoxString(_hwnd, IDC_EDIT22, "ERROR");
-				break;
+			MessageBox(_hwnd, ToWideString("Invalid amount of edges").c_str(), L"Alert", MB_OK);
+			//for (int i = 0; i < 20; i++)
+				//{
+				//	WriteToEditBoxString(_hwnd, iEdges[i], "ERROR");
+				//}
+				//WriteToEditBoxString(_hwnd, IDC_EDIT22, "ERROR");
+			break;
 			}
 
 			//Check boxes to make sure they have correct formatting "1,2" number colon number here
@@ -308,8 +312,9 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 
 
 
-			strBFSOutput = Graph->DFS(0);
-			WriteToEditBoxString(_hwnd, IDC_EDIT25, strBFSOutput);
+			strDFSOutput = Graph->DFS(0);
+			WriteToEditBoxString(_hwnd, IDC_EDIT25, strDFSOutput);
+			Graph->clearStrings();
 			break;
 		}
 		default:

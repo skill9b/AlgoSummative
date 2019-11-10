@@ -29,7 +29,7 @@ std::string cGraph::BFS(int s)
 {
 	std::string strBFS;
 	std::string strNodeToAdd; //String stores current node to add to strBFS
-
+	m_bOneTimeUse = true;
 	//Mark all vertices as not visited 
 	bool* verticesVisited = new bool[iVertices];
 	for (int i = 0; i < iVertices; i++)
@@ -55,11 +55,10 @@ std::string cGraph::BFS(int s)
 		//Combine all into string here and return at the end
 		strNodeToAdd = std::to_string(s);
 
-		static bool bOneTimeUse = true;
-		if (bOneTimeUse)
+		if (m_bOneTimeUse)
 		{
 			strBFS = strNodeToAdd; //Set it once to start
-			bOneTimeUse = false;
+			m_bOneTimeUse = false;
 		}
 		else
 		{
@@ -110,11 +109,10 @@ void cGraph::DFSUtil(int v, bool _verticesVisited[])
 
 	m_strDFSCurrentNode = std::to_string(v);
 
-	static bool bOneTimeUse = true;
-	if (bOneTimeUse)
+	if (m_bOneTimeUse)
 	{
 		m_strDFSOutput = m_strDFSCurrentNode; //Set it once to start
-		bOneTimeUse = false;
+		m_bOneTimeUse = false;
 	}
 	else
 	{
@@ -142,6 +140,7 @@ std::string cGraph::DFS(int v)
 		verticesVisited[i] = false;
 	}
 
+	m_bOneTimeUse = true;
 	//Call recursive function to output traversal
 	DFSUtil(v, verticesVisited);
 
