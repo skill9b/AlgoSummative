@@ -56,5 +56,5 @@ private:
 	std::set<Node*>* m_openList;
 	std::set<Node*>* m_closedList;
 
-	Node* m_pGrid[10][10];
+	Node* m_pGrid[10][10]{ 0 };
 };

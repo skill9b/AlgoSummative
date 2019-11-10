@@ -26,6 +26,7 @@ Pathfinding::Pathfinding() {
 	m_obstacleList = new std::set<Node*>();
 	m_openList = new std::set<Node*>();
 	m_closedList = new std::set<Node*>();
+	//m_pGrid { 0 };
 
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
@@ -165,6 +166,8 @@ int Pathfinding::CalculateGCost(Node* _currentNode, Node* _neighbourNode) {
 	else if ((iX - nX == 0) && ((iY - nY) == -1)) {		// Bottom neighbour
 		return MOVE_STRAIGHT_COST;
 	}
+
+	return 0;
 }
 
 Node* Pathfinding::GetLowestFCostNode() {

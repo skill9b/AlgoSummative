@@ -31,7 +31,7 @@
 #define ASTAR_BUTTON_TEXT L"A STAR"
 
 HMENU g_hMenu;
-HWND g_hDlgBFSDFS, g_hDlgAStar;		// Dialog handles
+HWND g_hDlgBFSDFS , g_hDlgAStar;		// Dialog handles
 HWND BfsDfsButton, AStarButton;
 
 int iSourceDest[4] = { -1, -1, -1, -1 };
@@ -490,6 +490,11 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 		return (0);
 	}
 
+	//Create the modeless dialog boxes for the calculators
+	//Matrix Calculator
+	g_hDlgBFSDFS = CreateDialog(_hInstance, MAKEINTRESOURCE(IDD_DialogBFSDFS), hwnd, (DLGPROC)BfsDfsDlgProc);
+	g_hDlgAStar = CreateDialog(_hInstance, MAKEINTRESOURCE(IDD_DialogAStar), hwnd, (DLGPROC)AStarDlgProc);
+
 	BfsDfsButton = CreateWindowEx(
 		0,                            // Extended possibilities for variation
 		L"BUTTON",                    // Class name
@@ -520,10 +525,7 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 		NULL
 	);
 
-	//Create the modeless dialog boxes for the calculators
-	//Matrix Calculator
-	g_hDlgBFSDFS = CreateDialog(_hInstance, MAKEINTRESOURCE(IDD_DialogBFSDFS), hwnd, (DLGPROC)BfsDfsDlgProc);
-	g_hDlgAStar = CreateDialog(_hInstance, MAKEINTRESOURCE(IDD_DialogAStar), hwnd, (DLGPROC)AStarDlgProc);
+	
 
 	// Enter main event loop
 	while (true)
@@ -537,8 +539,8 @@ int WINAPI WinMain(HINSTANCE _hInstance,
 				break;
 			}
 
-			if ((g_hDlgBFSDFS == 0 && g_hDlgAStar == 0) ||
-				(!IsDialogMessage(g_hDlgBFSDFS, &msg) && !IsDialogMessage(g_hDlgAStar, &msg)))
+			//if ((g_hDlgBFSDFS == 0 && g_hDlgAStar == 0) ||
+			if(	(!IsDialogMessage(g_hDlgBFSDFS, &msg) && !IsDialogMessage(g_hDlgAStar, &msg)))
 			{
 				// Translate any accelerator keys.
 				TranslateMessage(&msg);
