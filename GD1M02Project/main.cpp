@@ -146,6 +146,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			std::string strEdges;
 			int iFirst = 0, iSecond = 0;
 			int iCheck = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
+			int iAmountOfNodes = (ReadFromEditBoxFloat(_hwnd, IDC_EDIT1));
 			Graph->resetVertices(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
 
 			if ((iCheck == 0))
@@ -158,29 +159,32 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			if ((iAmountOfEdges >= 21) || (iAmountOfEdges <= 0)) //If user inputs more than 20 for amount of edges 
 			{
 				MessageBox(_hwnd, ToWideString("Invalid amount of edges").c_str(), L"Alert", MB_OK);
-			//for (int i = 0; i < 20; i++)
-				//{
-				//	WriteToEditBoxString(_hwnd, iEdges[i], "ERROR");
-				//}
-				//WriteToEditBoxString(_hwnd, IDC_EDIT22, "ERROR");
 				break;
 			}
 
 			
-			//Check boxes to make sure they have correct formatting "1,2" number colon number here
+			//Check boxes to make sure they have correct formatting "1,2" number colon number here and check for letters
 			int iColons = 0;
+			int iLetters = 0;
 			for (int i = 0; i < iAmountOfEdges; i++)
 			{
 				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
-				
-				for (int i = 0; i < strEdges.size(); i++) //Use j
+
+				for (int j = 0; j < strEdges.size(); j++) //Use j
 				{
-					if (strEdges[i] == 44)
+					if (strEdges[j] == 44)
 					{
 						iColons++;
+						//iLetters--;
 					}
 				}
-				
+				for (int k = 0; k < strEdges.size(); k++) //Use j
+				{
+					if ( !(strEdges[k] < 48) && !(strEdges[k] > 57) && (strEdges[k] != 44))
+					{
+						iLetters++;
+					}
+				}
 			}
 			if (iColons == 0)
 			{
@@ -188,6 +192,13 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 				break;
 			}
 
+			if (iLetters != 0)
+			{
+				MessageBox(_hwnd, ToWideString("Invalid Edges").c_str(), L"Alert", MB_OK);
+				break;
+			}
+
+			int iValidNumber = 0;
 			//Reading edges into graph
 			for (int i = 0; i < iAmountOfEdges; i++)
 			{
@@ -215,12 +226,17 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 							iCount++;
 						}
 					}
+					if ((iFirst > iAmountOfNodes - 1) || (iSecond > iAmountOfNodes - 1))
+					{
+						iValidNumber++;
+						break;
+					}
 					Graph->addEdge(iFirst, iSecond);
-				//}
-				//else
-				//{
-				//	WriteToEditBoxString(_hwnd, iEdges[i], " ");
-				//}
+			}
+			if (iValidNumber > 0)
+			{
+				MessageBox(_hwnd, ToWideString("Invalid Edge/s").c_str(), L"Alert", MB_OK);
+				break;
 			}
 			strBFSOutput = Graph->BFS(0);
 			WriteToEditBoxString(_hwnd, IDC_EDIT24, strBFSOutput);
@@ -233,6 +249,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			strDFSOutput = "";
 			Graph->resetVertices(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
 			int iCheck = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
+			int iAmountOfNodes = (ReadFromEditBoxFloat(_hwnd, IDC_EDIT1));
 			std::string strEdges;
 			int iFirst, iSecond;
 
@@ -246,69 +263,86 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			if ((iAmountOfEdges >= 21) || (iAmountOfEdges <= 0)) //If user inputs more than 20 for amount of edges 
 			{
 			MessageBox(_hwnd, ToWideString("Invalid amount of edges").c_str(), L"Alert", MB_OK);
-			//for (int i = 0; i < 20; i++)
-				//{
-				//	WriteToEditBoxString(_hwnd, iEdges[i], "ERROR");
-				//}
-				//WriteToEditBoxString(_hwnd, IDC_EDIT22, "ERROR");
 			break;
 			}
 
-			//Check boxes to make sure they have correct formatting "1,2" number colon number here
+			//Check boxes to make sure they have correct formatting "1,2" number colon number here and check for letters
 			int iColons = 0;
+			int iLetters = 0;
 			for (int i = 0; i < iAmountOfEdges; i++)
 			{
 				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
 
-				for (int i = 0; i < strEdges.size(); i++)
+				for (int j = 0; j < strEdges.size(); j++) //Use j
 				{
-					if (strEdges[i] == 44)
+					if (strEdges[j] == 44)
 					{
 						iColons++;
+						//iLetters--;
 					}
 				}
-
+				for (int k = 0; k < strEdges.size(); k++) //Use k
+				{
+					if ( !(strEdges[k] < 48) && !(strEdges[k] > 57) && (strEdges[k] != 44))
+					{
+						iLetters++;
+					}
+				}
 			}
 			if (iColons == 0)
 			{
-				MessageBox(_hwnd, ToWideString("Missing colon/s").c_str(), L"Alert", MB_OK);
+				MessageBox(_hwnd, ToWideString("Mising colon/s").c_str(), L"Alert", MB_OK);
+				break;
+			}
+
+			if (iLetters != 0)
+			{
+				MessageBox(_hwnd, ToWideString("Invalid Edges").c_str(), L"Alert", MB_OK);
 				break;
 			}
 
 
-			for (int i = 0; i < 20; i++)
+			int iValidNumber = 0;
+			//Reading edges into graph
+			for (int i = 0; i < iAmountOfEdges; i++)
 			{
-				if (i < iAmountOfEdges)
+				//if (i < iAmountOfEdges)
+				//{
+				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
+				stringstream ss1(strEdges);
+
+				//iFirst = std::atoi(&strEdges[0]);
+				//iSecond = std::atoi(&strEdges[2]);
+
+				std::string value;
+
+				int iCount = 0;
+				while (getline(ss1, value, ','))
 				{
-					strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
-					stringstream ss1(strEdges);
-
-					iFirst = std::atoi(&strEdges[0]);
-					iSecond = std::atoi(&strEdges[2]);
-
-					std::string value;
-
-					int iCount = 0;
-					while (getline(ss1, value, ','))
+					if (iCount == 0)
 					{
-						if (iCount == 0)
-						{
-							iFirst = std::stoi(value);
-							iCount++;
-						}
-						else if (iCount == 1)
-						{
-							iSecond = std::stoi(value);
-							iCount++;
-						}
+						iFirst = std::stoi(value);
+						iCount++;
 					}
-					Graph->addEdge(iFirst, iSecond);
+					else if (iCount == 1)
+					{
+						iSecond = std::stoi(value);
+						iCount++;
+					}
 				}
-				else
+				if ((iFirst > iAmountOfNodes - 1) || (iSecond > iAmountOfNodes - 1))
 				{
-					WriteToEditBoxString(_hwnd, iEdges[i], " ");
+					iValidNumber++;
+					break;
 				}
+				Graph->addEdge(iFirst, iSecond);
 			}
+			if (iValidNumber > 0)
+			{
+				MessageBox(_hwnd, ToWideString("Invalid Edge/s").c_str(), L"Alert", MB_OK);
+				break;
+			}
+
 
 
 
