@@ -154,6 +154,13 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			int iCheck = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
 			int iAmountOfNodes = (ReadFromEditBoxFloat(_hwnd, IDC_EDIT1));
 			Graph->resetVertices(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
+			iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
+
+			if ((iAmountOfNodes * (iAmountOfNodes - 1) / 2) < iAmountOfEdges)
+			{
+				MessageBox(_hwnd, ToWideString("Invalid amount of nodes or edges").c_str(), L"Alert", MB_OK);
+				break;
+			}
 
 			if ((iCheck == 0))
 			{
@@ -161,7 +168,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 				break;
 			}
 			
-			iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
+			
 			if ((iAmountOfEdges >= 21) || (iAmountOfEdges <= 0)) //If user inputs more than 20 for amount of edges 
 			{
 				MessageBox(_hwnd, ToWideString("Invalid amount of edges").c_str(), L"Alert", MB_OK);
@@ -258,6 +265,13 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			int iAmountOfNodes = (ReadFromEditBoxFloat(_hwnd, IDC_EDIT1));
 			std::string strEdges;
 			int iFirst, iSecond;
+			iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
+
+			if ((iAmountOfNodes * (iAmountOfNodes - 1) / 2) < iAmountOfEdges)
+			{
+				MessageBox(_hwnd, ToWideString("Invalid amount of nodes or edges").c_str(), L"Alert", MB_OK);
+				break;
+			}
 
 			if ((iCheck == 0))
 			{
@@ -265,7 +279,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 				break;
 			}
 
-			iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
+			
 			if ((iAmountOfEdges >= 21) || (iAmountOfEdges <= 0)) //If user inputs more than 20 for amount of edges 
 			{
 			MessageBox(_hwnd, ToWideString("Invalid amount of edges").c_str(), L"Alert", MB_OK);
