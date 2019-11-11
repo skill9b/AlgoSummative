@@ -37,6 +37,12 @@ HWND BfsDfsButton, AStarButton;
 int iSourceDest[4] = { -1, -1, -1, -1 };
 bool bPathCalculated = false;
 
+bool is_number(const std::string& s)
+{
+	std::string::const_iterator it = s.begin();
+	while (it != s.end() && std::isdigit(*it)) ++it;
+	return !s.empty() && it == s.end();
+}
 
 LRESULT CALLBACK WindowProc(HWND _hwnd,
 	UINT _msg,
@@ -180,7 +186,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 				}
 				for (int k = 0; k < strEdges.size(); k++) //Use j
 				{
-					if ( !(strEdges[k] < 48) && !(strEdges[k] > 57) && (strEdges[k] != 44))
+					if (!((strEdges[k] < 48) && (strEdges[k] > 57)) && (strEdges[k] != 44)) //Number is
 					{
 						iLetters++;
 					}
@@ -283,7 +289,16 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 				}
 				for (int k = 0; k < strEdges.size(); k++) //Use k
 				{
-					if ( !(strEdges[k] < 48) && !(strEdges[k] > 57) && (strEdges[k] != 44))
+					//if ( !((strEdges[k] < 48) && (strEdges[k] > 57)) || (strEdges[k] != 44))
+					//{
+					//	iLetters++;
+					//}
+					//if (!(isdigit(strEdges[k])) && (strEdges[k] != 44))
+					//{
+					//	iLetters++;
+					//}
+					if (  (strEdges[k] != 48) && (strEdges[k] != 49) && (strEdges[k] != 50) && (strEdges[k] != 51) && (strEdges[k] != 52) && (strEdges[k] != 53) &&
+						(strEdges[k] != 54) && (strEdges[k] != 55) && (strEdges[k] != 56) && (strEdges[k] != 57) && (strEdges[k] != 44))
 					{
 						iLetters++;
 					}
@@ -317,7 +332,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 				std::string value;
 
 				int iCount = 0;
-				while (getline(ss1, value, ','))
+				while (getline(ss1, value, ',')) //10,1
 				{
 					if (iCount == 0)
 					{
