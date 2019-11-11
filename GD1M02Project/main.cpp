@@ -289,19 +289,19 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 				}
 				for (int k = 0; k < strEdges.size(); k++) //Use k
 				{
-					//if ( !((strEdges[k] < 48) && (strEdges[k] > 57)) || (strEdges[k] != 44))
-					//{
-					//	iLetters++;
-					//}
+					if ( !((strEdges[k] <= 48) && (strEdges[k] >= 57)) || (strEdges[k] != 44))
+					{
+						iLetters++;
+					}
 					//if (!(isdigit(strEdges[k])) && (strEdges[k] != 44))
 					//{
 					//	iLetters++;
 					//}
-					if (  (strEdges[k] != 48) && (strEdges[k] != 49) && (strEdges[k] != 50) && (strEdges[k] != 51) && (strEdges[k] != 52) && (strEdges[k] != 53) &&
-						(strEdges[k] != 54) && (strEdges[k] != 55) && (strEdges[k] != 56) && (strEdges[k] != 57) && (strEdges[k] != 44))
-					{
-						iLetters++;
-					}
+					//if (  (strEdges[k] != 48) && (strEdges[k] != 49) && (strEdges[k] != 50) && (strEdges[k] != 51) && (strEdges[k] != 52) && (strEdges[k] != 53) &&
+					//	(strEdges[k] != 54) && (strEdges[k] != 55) && (strEdges[k] != 56) && (strEdges[k] != 57) && (strEdges[k] != 44))
+					//{
+					//	iLetters++;
+					//}
 				}
 			}
 			if (iColons == 0)
