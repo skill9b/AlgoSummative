@@ -6,10 +6,10 @@
 //
 // (c) 2018 Media Design School
 //
-// File Name	: 
-// Description	: 
-// Author		: Your Name
-// Mail			: your.name@mediadesign.school.nz
+// File Name	: utils.h
+// Description	: This file contains supplementary functions to the main.cpp 
+// Author		: Jay Patel, Vivian Xu
+// Mail			: jay.pat8646@mediadesign.school.nz ,vivian.xu9501@mediadesign.school.nz
 //
 
 #pragma once
@@ -227,46 +227,6 @@ void ReadObstacleGrid(HWND _hDlg, Pathfinding* path) {
 		}
 	}
 }
-
-//Backup
-/*template<typename T>
-std::string ToString(const T& _value)
-{
-	std::strstream theStream;
-	theStream << _value << std::ends;
-	return (theStream.str());
-}
-
-template<typename T>
-std::wstring ToWideString(const T& _value)
-{
-	std::wstringstream theStream;
-	theStream << _value << std::ends;
-	return (theStream.str());
-}
-
-float ReadFromEditBox(HWND _hDlg, int _iResourceID)
-{
-	wchar_t _pcValue[10];
-	ZeroMemory(_pcValue, 10);
-	GetDlgItemText(_hDlg, _iResourceID, _pcValue, 10);
-	if (_pcValue[0] == 0)
-	{
-		return 0.0f;
-	}
-	else
-	{
-		return static_cast<float>(_wtof(_pcValue));
-	}
-}
-
-void WriteToEditBox(HWND _hDlg, int _iResourceID, float _fValue)
-{
-	std::wstring _strValue = ToWideString(_fValue);
-	SetDlgItemText(_hDlg, _iResourceID, _strValue.c_str());
-}*/
-
-
 
 
 #endif    // __UTILS_H__
