@@ -186,7 +186,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 				}
 				for (int k = 0; k < strEdges.size(); k++) //Use j
 				{
-					if (!((strEdges[k] < 48) && (strEdges[k] > 57)) && (strEdges[k] != 44)) //Number is
+					if (((strEdges[k] < 48) || (strEdges[k] >= 57)) && (strEdges[k] != 44))
 					{
 						iLetters++;
 					}
@@ -289,7 +289,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 				}
 				for (int k = 0; k < strEdges.size(); k++) //Use k
 				{
-					if ( !((strEdges[k] <= 48) && (strEdges[k] >= 57)) || (strEdges[k] != 44))
+					if ( ((strEdges[k] < 48) || (strEdges[k] >= 57)) && (strEdges[k] != 44))
 					{
 						iLetters++;
 					}
@@ -310,7 +310,7 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 				break;
 			}
 
-			if (iLetters != 0)
+			if (iLetters > 0)
 			{
 				MessageBox(_hwnd, ToWideString("Invalid Edges").c_str(), L"Alert", MB_OK);
 				break;
