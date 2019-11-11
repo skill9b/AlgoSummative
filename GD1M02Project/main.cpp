@@ -22,7 +22,7 @@
 
 #include "utils.h"
 #include "resource.h"
-#include "cGraph.h"
+#include "Graph.h"
 #include "Pathfinding.h"
 #include "Node.h"
 
@@ -129,13 +129,6 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 	WPARAM _wparam,
 	LPARAM _lparam)
 {
-	cGraph* Graph = new cGraph(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1))); //Makes graph with amount of nodes read from first edit box
-
-	int iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
-
-	int iEdges[20] = { IDC_EDIT2, IDC_EDIT3, IDC_EDIT4, IDC_EDIT5, IDC_EDIT6, IDC_EDIT7, IDC_EDIT8, IDC_EDIT9, IDC_EDIT10, IDC_EDIT11,
-					   IDC_EDIT12, IDC_EDIT13, IDC_EDIT14, IDC_EDIT15, IDC_EDIT16, IDC_EDIT17, IDC_EDIT18, IDC_EDIT19, IDC_EDIT20, IDC_EDIT21 };
-
 	std::string strBFSOutput;
 	std::string strDFSOutput;
 
@@ -144,6 +137,13 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 	{
 	case WM_COMMAND:
 	{
+		Graph* undirectedGraph = new Graph(0); //Makes graph with amount of nodes read from first edit box
+		
+		int iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
+		
+		int iEdges[20] = { IDC_EDIT2, IDC_EDIT3, IDC_EDIT4, IDC_EDIT5, IDC_EDIT6, IDC_EDIT7, IDC_EDIT8, IDC_EDIT9, IDC_EDIT10, IDC_EDIT11,
+						   IDC_EDIT12, IDC_EDIT13, IDC_EDIT14, IDC_EDIT15, IDC_EDIT16, IDC_EDIT17, IDC_EDIT18, IDC_EDIT19, IDC_EDIT20, IDC_EDIT21 };
+
 		switch (LOWORD(_wparam))
 		{
 		case IDC_BUTTON6:	// BFS
@@ -152,23 +152,32 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			std::string strEdges;
 			int iFirst = 0, iSecond = 0;
 			int iCheck = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
-			int iAmountOfNodes = (ReadFromEditBoxFloat(_hwnd, IDC_EDIT1));
-			Graph->resetVertices(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
+			int iAmountOfNodes = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
 			iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
 
+			//Check for too many nodes
+			if (ReadFromEditBoxFloat(_hwnd, IDC_EDIT1) > 999)
+			{
+				MessageBox(_hwnd, ToWideString("Too many nodes").c_str(), L"Alert", MB_OK);
+				break;
+			}
+			undirectedGraph->resetVertices(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
+
+			//Check for too many nodes to edges
 			if ((iAmountOfNodes * (iAmountOfNodes - 1) / 2) < iAmountOfEdges)
 			{
 				MessageBox(_hwnd, ToWideString("Invalid amount of nodes or edges").c_str(), L"Alert", MB_OK);
 				break;
 			}
 
+			//If no nodes
 			if ((iCheck == 0))
 			{
 				MessageBox(_hwnd, ToWideString("Invalid amount of nodes").c_str(), L"Alert", MB_OK);
 				break;
 			}
 			
-			
+			//If too many edges
 			if ((iAmountOfEdges >= 21) || (iAmountOfEdges <= 0)) //If user inputs more than 20 for amount of edges 
 			{
 				MessageBox(_hwnd, ToWideString("Invalid amount of edges").c_str(), L"Alert", MB_OK);
@@ -176,32 +185,48 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			}
 
 			
-			//Check boxes to make sure they have correct formatting "1,2" number colon number here and check for letters
-			int iColons = 0;
+			
+			int iCommas = 0;
 			int iLetters = 0;
 			for (int i = 0; i < iAmountOfEdges; i++)
 			{
+				int iCommaPerBox;
 				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
 
-				for (int j = 0; j < strEdges.size(); j++) //Use j
+				for (int j = 0; j < strEdges.size(); j++) 
 				{
+					//If no commas
 					if (strEdges[j] == 44)
 					{
-						iColons++;
-						//iLetters--;
+						iCommas++;
+					}
+
+					//If too many commas
+					if (iCommas > iAmountOfEdges)
+					{
+						iCommas = 123456;
+						break;
 					}
 				}
-				for (int k = 0; k < strEdges.size(); k++) //Use j
+				//Check if not numbers or comma
+				for (int k = 0; k < strEdges.size(); k++) 
 				{
-					if (((strEdges[k] < 48) || (strEdges[k] >= 57)) && (strEdges[k] != 44))
+					if (((strEdges[k] < 48) || (strEdges[k] > 57)) && (strEdges[k] != 44))
 					{
 						iLetters++;
 					}
 				}
 			}
-			if (iColons == 0)
+
+			if (iCommas == 0)
 			{
-				MessageBox(_hwnd, ToWideString("Mising colon/s").c_str(), L"Alert", MB_OK);
+				MessageBox(_hwnd, ToWideString("Missing comma/s").c_str(), L"Alert", MB_OK);
+				break;
+			}
+
+			if (iCommas == 123456)
+			{
+				MessageBox(_hwnd, ToWideString("Too many commas").c_str(), L"Alert", MB_OK);
 				break;
 			}
 
@@ -215,112 +240,126 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			//Reading edges into graph
 			for (int i = 0; i < iAmountOfEdges; i++)
 			{
-				//if (i < iAmountOfEdges)
-				//{
-					strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
-					stringstream ss1(strEdges);
+				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
+				stringstream ss1(strEdges);
 
-					//iFirst = std::atoi(&strEdges[0]);
-					//iSecond = std::atoi(&strEdges[2]);
+				std::string value;
 
-					std::string value;
-
-					int iCount = 0;
-					while (getline(ss1, value, ','))
+				int iCount = 0;
+				while (getline(ss1, value, ','))
+				{
+					if (iCount == 0)
 					{
-						if (iCount == 0)
-						{
-							iFirst = std::stoi(value);
-							iCount++;
-						}
-						else if (iCount == 1)
-						{
-							iSecond = std::stoi(value);
-							iCount++;
-						}
+						iFirst = std::stoi(value);
+						iCount++;
 					}
-					if ((iFirst > iAmountOfNodes - 1) || (iSecond > iAmountOfNodes - 1))
+					else if (iCount == 1)
 					{
-						iValidNumber++;
-						break;
+						iSecond = std::stoi(value);
+						iCount++;
 					}
-					Graph->addEdge(iFirst, iSecond);
+				}
+				//Check if edges adding are in bound
+				if ((iFirst > iAmountOfNodes - 1) || (iSecond > iAmountOfNodes - 1))
+				{
+					iValidNumber++;
+					break;
+				}
+				undirectedGraph->addEdge(iFirst, iSecond);
 			}
+
 			if (iValidNumber > 0)
 			{
 				MessageBox(_hwnd, ToWideString("Invalid Edge/s").c_str(), L"Alert", MB_OK);
 				break;
 			}
-			strBFSOutput = Graph->BFS(0);
+
+			strBFSOutput = undirectedGraph->BFS(0);
 			WriteToEditBoxString(_hwnd, IDC_EDIT24, strBFSOutput);
-			Graph->clearStrings();
+			undirectedGraph->clearStrings();
 			break;
 		}
 
 		case IDC_BUTTON7: //DFS button
 		{
 			strDFSOutput = "";
-			Graph->resetVertices(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
 			int iCheck = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
-			int iAmountOfNodes = (ReadFromEditBoxFloat(_hwnd, IDC_EDIT1));
-			std::string strEdges;
+			int iAmountOfNodes = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
 			int iFirst, iSecond;
-			iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); //Amount of loop
+			std::string strEdges;
+			iAmountOfEdges = (int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT22))); 
 
+			//If too many nodes
+			if (ReadFromEditBoxFloat(_hwnd, IDC_EDIT1) > 999)
+			{
+				MessageBox(_hwnd, ToWideString("Too many nodes").c_str(), L"Alert", MB_OK);
+				break;
+			}
+			undirectedGraph->resetVertices(int(ReadFromEditBoxFloat(_hwnd, IDC_EDIT1)));
+
+
+			//If too many nodes to edges
 			if ((iAmountOfNodes * (iAmountOfNodes - 1) / 2) < iAmountOfEdges)
 			{
 				MessageBox(_hwnd, ToWideString("Invalid amount of nodes or edges").c_str(), L"Alert", MB_OK);
 				break;
 			}
 
+			//If no nodes
 			if ((iCheck == 0))
 			{
 				MessageBox(_hwnd, ToWideString("Invalid amount of nodes").c_str(), L"Alert", MB_OK);
 				break;
 			}
 
-			
-			if ((iAmountOfEdges >= 21) || (iAmountOfEdges <= 0)) //If user inputs more than 20 for amount of edges 
+			//If user inputs more than 20 for amount of edges 
+			if ((iAmountOfEdges >= 21) || (iAmountOfEdges <= 0)) 
 			{
-			MessageBox(_hwnd, ToWideString("Invalid amount of edges").c_str(), L"Alert", MB_OK);
-			break;
+				MessageBox(_hwnd, ToWideString("Invalid amount of edges").c_str(), L"Alert", MB_OK);
+				break;
 			}
 
 			//Check boxes to make sure they have correct formatting "1,2" number colon number here and check for letters
-			int iColons = 0;
+			int iCommas = 0;
 			int iLetters = 0;
 			for (int i = 0; i < iAmountOfEdges; i++)
 			{
 				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
 
-				for (int j = 0; j < strEdges.size(); j++) //Use j
+				for (int j = 0; j < strEdges.size(); j++)
 				{
+					//If not enought comas
 					if (strEdges[j] == 44)
 					{
-						iColons++;
-						//iLetters--;
+						iCommas++;
 					}
 				}
-				for (int k = 0; k < strEdges.size(); k++) //Use k
+
+				//Too many commas
+				if (iCommas > iAmountOfEdges)
 				{
-					if ( ((strEdges[k] < 48) || (strEdges[k] >= 57)) && (strEdges[k] != 44))
+					iCommas = 123456;
+					break;
+				}
+
+				for (int k = 0; k < strEdges.size(); k++)
+				{
+					//Check for things other than numbers and commas
+					if ( ((strEdges[k] < 48) || (strEdges[k] > 57)) && (strEdges[k] != 44))
 					{
 						iLetters++;
 					}
-					//if (!(isdigit(strEdges[k])) && (strEdges[k] != 44))
-					//{
-					//	iLetters++;
-					//}
-					//if (  (strEdges[k] != 48) && (strEdges[k] != 49) && (strEdges[k] != 50) && (strEdges[k] != 51) && (strEdges[k] != 52) && (strEdges[k] != 53) &&
-					//	(strEdges[k] != 54) && (strEdges[k] != 55) && (strEdges[k] != 56) && (strEdges[k] != 57) && (strEdges[k] != 44))
-					//{
-					//	iLetters++;
-					//}
 				}
 			}
-			if (iColons == 0)
+			if (iCommas == 0) 
 			{
-				MessageBox(_hwnd, ToWideString("Mising colon/s").c_str(), L"Alert", MB_OK);
+				MessageBox(_hwnd, ToWideString("Missing comma/s").c_str(), L"Alert", MB_OK);
+				break;
+			}
+
+			if (iCommas == 123456)
+			{
+				MessageBox(_hwnd, ToWideString("Too many commas").c_str(), L"Alert", MB_OK);
 				break;
 			}
 
@@ -335,18 +374,14 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 			//Reading edges into graph
 			for (int i = 0; i < iAmountOfEdges; i++)
 			{
-				//if (i < iAmountOfEdges)
-				//{
+
 				strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
 				stringstream ss1(strEdges);
-
-				//iFirst = std::atoi(&strEdges[0]);
-				//iSecond = std::atoi(&strEdges[2]);
 
 				std::string value;
 
 				int iCount = 0;
-				while (getline(ss1, value, ',')) //10,1
+				while (getline(ss1, value, ','))
 				{
 					if (iCount == 0)
 					{
@@ -358,13 +393,18 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 						iSecond = std::stoi(value);
 						iCount++;
 					}
+					else if (iCount > 2)
+					{
+						break;
+					}
 				}
+				//Check if edges adding are in bound
 				if ((iFirst > iAmountOfNodes - 1) || (iSecond > iAmountOfNodes - 1))
 				{
 					iValidNumber++;
 					break;
 				}
-				Graph->addEdge(iFirst, iSecond);
+				undirectedGraph->addEdge(iFirst, iSecond);
 			}
 			if (iValidNumber > 0)
 			{
@@ -375,9 +415,9 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 
 
 
-			strDFSOutput = Graph->DFS(0);
+			strDFSOutput = undirectedGraph->DFS(0);
 			WriteToEditBoxString(_hwnd, IDC_EDIT25, strDFSOutput);
-			Graph->clearStrings();
+			undirectedGraph->clearStrings();
 			break;
 		}
 		default:
@@ -395,7 +435,6 @@ BOOL CALLBACK BfsDfsDlgProc(HWND _hwnd,
 	default:
 		break;
 	}
-	Graph->clearStrings();
 	return FALSE;
 }
 
@@ -625,7 +664,7 @@ for (int i = 0; i < 20; i++)
 		strEdges = ReadFromEditBox(_hwnd, iEdges[i]);
 		iFirst = std::atoi(&strEdges[0]);
 		iSecond = std::atoi(&strEdges[2]);
-		Graph->addEdge(iFirst, iSecond);
+		undirectedGraph->addEdge(iFirst, iSecond);
 	}
 	else
 	{

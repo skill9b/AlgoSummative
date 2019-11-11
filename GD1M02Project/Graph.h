@@ -1,5 +1,4 @@
 #pragma once
-
 //
 // Bachelor of Software Engineering
 // Media Design School
@@ -8,23 +7,23 @@
 //
 // (c) 2018 Media Design School
 //
-// File Name	: cGraph.h
-// Description	: This file contains the header file for the cGraph class (for BFS and DFS)
+// File Name	: Graph.h
+// Description	: This file contains the header file for the Graph class (for BFS and DFS)
 // Author		: Jay Patel, Vivian Xu
 // Mail			: jay.pat8646@mediadesign.school.nz ,vivian.xu9501@mediadesign.school.nz
 //
 
 
-#include<iostream> 
-#include <list> 
+#include <iostream>
+#include <list>
 #include <string>
 using namespace std;
 
 
-class cGraph
+class Graph
 {
 	//private:
-		//Number of vertices
+	//Number of vertices
 	int iVertices;
 
 	//Pointer to adjacency list
@@ -36,9 +35,9 @@ class cGraph
 	std::string m_strBFSOutput;
 	std::string m_strBFSCurrentNode;
 public:
-	cGraph(int _v); //Constructor
+	Graph(int _v); //Constructor
 	void resetVertices(int _v); 
-	~cGraph(); //Destructor
+	~Graph(); //Destructor
 	void addEdge(int _v, int _w); //Function to add edges to graph
 	std::string BFS(int s); //Outputs bfs search passing in source node
 	void clearStrings();

@@ -139,7 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="cGraph.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Pathfinding.h" />
     <ClInclude Include="resource.h" />
@@ -149,7 +149,7 @@
     <ResourceCompile Include="GD1M02Project.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cGraph.cpp" />
+    <ClCompile Include="Graph.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Pathfinding.cpp" />

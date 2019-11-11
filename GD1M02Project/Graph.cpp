@@ -6,34 +6,34 @@
 //
 // (c) 2018 Media Design School
 //
-// File Name	: cGraph.cpp
-// Description	: This file contains the cGraph class for BFS and DFS
+// File Name	: Graph.cpp
+// Description	: This file contains the Graph class for BFS and DFS
 // Author		: Jay Patel, Vivian Xu
 // Mail			: jay.pat8646@mediadesign.school.nz ,vivian.xu9501@mediadesign.school.nz
 //
 
 
 
-#include "cGraph.h"
+#include "Graph.h"
 
-cGraph::cGraph(int _v)
+Graph::Graph(int _v)
 {
 	this->iVertices = _v;
 	adjList = new list<int> [_v];
 }
 
-void cGraph::resetVertices(int _v)
+void Graph::resetVertices(int _v)
 {
 	this->iVertices = _v;
 	adjList = new list<int>[_v];
 }
 
-cGraph::~cGraph()
+Graph::~Graph()
 {
 	delete adjList;
 }
 
-void cGraph::addEdge(int _v, int _w)
+void Graph::addEdge(int _v, int _w)
 {
 	//Done twice in opposite so that it becomes unidirection rather than bidirectional
 
@@ -41,7 +41,7 @@ void cGraph::addEdge(int _v, int _w)
 	adjList[_w].push_back(_v); //Add v to w's list of edges
 }
 
-std::string cGraph::BFS(int s)
+std::string Graph::BFS(int s)
 {
 	std::string strBFS;
 	std::string strNodeToAdd; //String stores current node to add to strBFS
@@ -104,7 +104,7 @@ std::string cGraph::BFS(int s)
 	return (strBFS);
 }
 
-void cGraph::clearStrings()
+void Graph::clearStrings()
 {
 	m_strDFSOutput = "";
 	m_strBFSOutput = "";
@@ -117,7 +117,7 @@ void cGraph::clearStrings()
 	m_strBFSCurrentNode.clear();
 }
 
-void cGraph::DFSUtil(int v, bool _verticesVisited[])
+void Graph::DFSUtil(int v, bool _verticesVisited[])
 {
 	//Mark current node as visited and output
 	_verticesVisited[v] = true;
@@ -147,7 +147,7 @@ void cGraph::DFSUtil(int v, bool _verticesVisited[])
 	}
 }
 
-std::string cGraph::DFS(int v)
+std::string Graph::DFS(int v)
 {
 	//Mark all vertices as not visited 
 	bool* verticesVisited = new bool[iVertices];
