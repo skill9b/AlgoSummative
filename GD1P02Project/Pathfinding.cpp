@@ -71,9 +71,9 @@ void Pathfinding::FindPath() {
 	// Get Source node and add to open list
 	m_openList->insert(m_pGrid[m_iSourceX][m_iSourceY]);											
 																									
-	m_pGrid[m_iSourceX][m_iSourceY]->SetGCost(0);													// Set Source node's G cost
-	m_pGrid[m_iSourceX][m_iSourceY]->SetHCost(CalculateHCost(m_pGrid[m_iSourceX][m_iSourceY]));		// Set Source node's H cost
-	m_pGrid[m_iSourceX][m_iSourceY]->SetFCost(CalculateFCost(m_pGrid[m_iSourceX][m_iSourceY]));		// Set Source node's F cost
+	m_pGrid[m_iSourceX][m_iSourceY]->SetGCost(0);													// Set Source node's initial G cost
+	m_pGrid[m_iSourceX][m_iSourceY]->SetHCost(CalculateHCost(m_pGrid[m_iSourceX][m_iSourceY]));		// Set Source node's initial H cost
+	m_pGrid[m_iSourceX][m_iSourceY]->SetFCost(CalculateFCost(m_pGrid[m_iSourceX][m_iSourceY]));		// Set Source node's initial F cost
 																									
 	while (!m_openList->empty()) {																	// While there are nodes discovered/in open list
 		Node* currentNode = GetLowestFCostNode(); 													// Set current node to node with lowest F cost
