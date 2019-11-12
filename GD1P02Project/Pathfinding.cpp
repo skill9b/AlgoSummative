@@ -69,40 +69,40 @@ Pathfinding::~Pathfinding() {
 
 void Pathfinding::FindPath() {
 	// Get Source node and add to open list
-	m_openList->insert(m_pGrid[m_iSourceX][m_iSourceY]);
-
-	m_pGrid[m_iSourceX][m_iSourceY]->SetGCost(0);						
-	m_pGrid[m_iSourceX][m_iSourceY]->SetHCost(CalculateHCost(m_pGrid[m_iSourceX][m_iSourceY]));
-	m_pGrid[m_iSourceX][m_iSourceY]->SetFCost(CalculateFCost(m_pGrid[m_iSourceX][m_iSourceY]));
-
-	while (!m_openList->empty()) {
-		Node* currentNode = GetLowestFCostNode(); 
-		if ((currentNode->GetX() == m_iGoalX) && (currentNode->GetY() == m_iGoalY)) {
-			m_endNode = currentNode;
-			return;
-		}
-
-		// Remove current node from open list, add to closed list
-		std::set<Node*>::iterator nodeVisited = m_openList->find(currentNode);
-		m_openList->erase(nodeVisited);
-		m_closedList->insert(currentNode);
-
-		std::set<Node*>* neighbourList = GetNeighbourList(currentNode);
-		std::set<Node*>::iterator neighbourNode = neighbourList->begin();
-
-		for (neighbourNode; neighbourNode != neighbourList->end(); neighbourNode++) {
-
-			// Update G cost for each neighbour
-			int tempGCost = currentNode->GetGCost() + CalculateGCost(currentNode, *neighbourNode);
-			if (tempGCost < (*neighbourNode)->GetGCost()) {
-				(*neighbourNode)->SetPreviousNode(currentNode);
-				(*neighbourNode)->SetGCost(tempGCost);
-				(*neighbourNode)->SetHCost(CalculateHCost(*neighbourNode));
-				(*neighbourNode)->SetFCost(CalculateFCost(*neighbourNode));
-
-				// If open list does not contain neighbour node
-				if (m_openList->find(*neighbourNode) == m_openList->end()) {	
-					m_openList->insert(*neighbourNode);
+	m_openList->insert(m_pGrid[m_iSourceX][m_iSourceY]);											
+																									
+	m_pGrid[m_iSourceX][m_iSourceY]->SetGCost(0);													// Set Source node's G cost
+	m_pGrid[m_iSourceX][m_iSourceY]->SetHCost(CalculateHCost(m_pGrid[m_iSourceX][m_iSourceY]));		// Set Source node's H cost
+	m_pGrid[m_iSourceX][m_iSourceY]->SetFCost(CalculateFCost(m_pGrid[m_iSourceX][m_iSourceY]));		// Set Source node's F cost
+																									
+	while (!m_openList->empty()) {																	// While there are nodes discovered/in open list
+		Node* currentNode = GetLowestFCostNode(); 													// Set current node to node with lowest F cost
+		if ((currentNode->GetX() == m_iGoalX) && (currentNode->GetY() == m_iGoalY)) {				// Check if current node is End node
+			m_endNode = currentNode;																// If it is return node 
+			return;																					
+		}																							
+																									
+		// Remove current node from open list, add to closed list									
+		std::set<Node*>::iterator nodeVisited = m_openList->find(currentNode);						 
+		m_openList->erase(nodeVisited);																
+		m_closedList->insert(currentNode);															
+																									
+		std::set<Node*>* neighbourList = GetNeighbourList(currentNode);								// Get neighbourList of current node
+		std::set<Node*>::iterator neighbourNode = neighbourList->begin();							// Set beginning of iterator
+																									
+		for (neighbourNode; neighbourNode != neighbourList->end(); neighbourNode++) {				// Loop until no more neighbours left in neighbourList of current node
+																									
+			// Update G cost for each neighbour														
+			int tempGCost = currentNode->GetGCost() + CalculateGCost(currentNode, *neighbourNode);	// Calculte G cost to see if other nodes' costs need to be updates
+			if (tempGCost < (*neighbourNode)->GetGCost()) {											// If new G cost is greater update
+				(*neighbourNode)->SetPreviousNode(currentNode);										// Set parent to create path
+				(*neighbourNode)->SetGCost(tempGCost);												// Set new G cost
+				(*neighbourNode)->SetHCost(CalculateHCost(*neighbourNode));							// Calculate new H cost
+				(*neighbourNode)->SetFCost(CalculateFCost(*neighbourNode));							// Calculate new F cost
+																									
+				// If open list does not contain neighbour node										
+				if (m_openList->find(*neighbourNode) == m_openList->end()) {						// If no more neighbours for current node
+					m_openList->insert(*neighbourNode);												// Insert neighbours of current node to open list as they're discorvered 
 				}
 			}
 		}
@@ -177,28 +177,29 @@ std::set<Node*>* Pathfinding::GetNeighbourList(Node* _currentNode) {
 	int iX = _currentNode->GetX();
 	int iY = _currentNode->GetY();
 
-	if ((iX - 1) >= 0) {		// Left
+	// Left
+	if ((iX - 1) >= 0) {														// Checks if Left is out of bounds	
 
-		if (!m_pGrid[iX - 1][iY]->IsObstacle()) {
+		if (!m_pGrid[iX - 1][iY]->IsObstacle()) {								// Checks if Left is obstacle
 
-			neighbourList->insert(m_pGrid[iX - 1][iY]);							// Insert left
+			neighbourList->insert(m_pGrid[iX - 1][iY]);							// Insert Left node 
 
-			if ((iY - 1) >= 0) {												// Top (check)
-				if (!m_pGrid[iX][iY - 1]->IsObstacle()) {
-					if (!m_pGrid[iX - 1][iY - 1]->IsObstacle()) {				// Left Top
-						neighbourList->insert(m_pGrid[iX - 1][iY - 1]);
+			if ((iY - 1) >= 0) {												// Checks node Above is out of bounds
+				if (!m_pGrid[iX][iY - 1]->IsObstacle()) {						// Checks if Above is not obstacle
+					if (!m_pGrid[iX - 1][iY - 1]->IsObstacle()) {				// Checks if Top Left is not obstacle
+						neighbourList->insert(m_pGrid[iX - 1][iY - 1]);			// Inserts Top Left 
 					}
 					else
 					{
-						m_closedList->insert(m_pGrid[iX - 1][iY - 1]);
+						m_closedList->insert(m_pGrid[iX - 1][iY - 1]);			//If Top Left is obstacle add to Closed list
 					}
 				}
 			}
 
-			if ((iY + 1) < 10) {
-				if (!m_pGrid[iX][iY + 1]->IsObstacle()) {					// Bottom (check)						
-					if (!m_pGrid[iX - 1][iY + 1]->IsObstacle()) {
-						neighbourList->insert(m_pGrid[iX - 1][iY + 1]);		// Left bottom
+			if ((iY + 1) < 10) {												// Checks if node Above is out of bounds
+				if (!m_pGrid[iX][iY + 1]->IsObstacle()) {						// Checks if Bottom node is obstacle						
+					if (!m_pGrid[iX - 1][iY + 1]->IsObstacle()) {				// Checks if Bottom Left node is Obstacle
+						neighbourList->insert(m_pGrid[iX - 1][iY + 1]);			// Insert 
 					}
 					else
 					{
@@ -213,8 +214,8 @@ std::set<Node*>* Pathfinding::GetNeighbourList(Node* _currentNode) {
 		}
 
 	}
-
-	if ((iX + 1) < 10) {			// Right
+	// Right
+	if ((iX + 1) < 10) {			
 		if (!m_pGrid[iX + 1][iY]->IsObstacle()) {
 
 			neighbourList->insert(m_pGrid[iX + 1][iY]);						// Insert right
@@ -249,8 +250,8 @@ std::set<Node*>* Pathfinding::GetNeighbourList(Node* _currentNode) {
 		}
 	}
 
-
-	if ((iY - 1) >= 0) {		// Top node
+	// Insert Top node if not obstacle
+	if ((iY - 1) >= 0) {		
 		if (!m_pGrid[iX][iY - 1]->IsObstacle()) {
 			neighbourList->insert(m_pGrid[iX][iY - 1]);
 		}
@@ -259,8 +260,8 @@ std::set<Node*>* Pathfinding::GetNeighbourList(Node* _currentNode) {
 			m_closedList->insert(m_pGrid[iX][iY - 1]);
 		}
 	}
-
-	if ((iY + 1) < 10) {			// Bottom node
+	// Insert Bottom node if not obstacle
+	if ((iY + 1) < 10) {			
 		if (!m_pGrid[iX][iY + 1]->IsObstacle()) {
 			neighbourList->insert(m_pGrid[iX][iY + 1]);
 		}
