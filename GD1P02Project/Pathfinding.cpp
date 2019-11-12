@@ -274,7 +274,7 @@ std::set<Node*>* Pathfinding::GetNeighbourList(Node* _currentNode) {
 	std::set<Node*>::iterator it = neighbourList->begin();
 
 	while (it != neighbourList->end()) {
-		if (m_closedList->find(*it) == m_closedList->end()) {	// If not in closed list, add to finalNeighbourList
+		if (m_closedList->find(*it) == m_closedList->end()) {					// If not in closed list, add to finalNeighbourList
 			finalNeighbourList->insert(*it);
 		}
 		it++;

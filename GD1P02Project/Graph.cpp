@@ -83,7 +83,7 @@ std::string Graph::BFS(int s)
 		
 		Queue.pop_front(); //Dequeue current visited vertex
 
-		//Get all adjecent vertices of matrix just dequeued
+		//Get all adjecent vertices of node just dequeued
 		for (Iterator = adjList[s].begin(); Iterator != adjList[s].end(); Iterator++)
 		{
 			//If adjacent vertex has not been visited 
@@ -95,11 +95,7 @@ std::string Graph::BFS(int s)
 				Queue.push_back(*Iterator);
 			}
 		}
-
-		
-
 	}
-
 	//return string version of output
 	return (strBFS);
 }
@@ -134,7 +130,6 @@ void Graph::DFSUtil(int v, bool _verticesVisited[])
 		m_strDFSOutput = m_strDFSOutput + ", " + m_strDFSCurrentNode; //Updates return string with current node every loop
 	}
 
-
 	//Call recursive for all adjacent vertices using iterator
 	list<int>::iterator Iterator;
 	for (Iterator = adjList[v].begin(); Iterator != adjList[v].end(); Iterator++)
@@ -156,9 +151,9 @@ std::string Graph::DFS(int v)
 	}
 
 	m_bOneTimeUse = true;
+
 	//Call recursive function to output traversal
 	DFSUtil(v, verticesVisited);
 
-	
 	return (m_strDFSOutput);
 }

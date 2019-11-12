@@ -28,7 +28,7 @@ public:
 	~Graph(); //Destructor
 	void addEdge(int _v, int _w); //Function to add edges to graph
 	std::string BFS(int s); //Outputs bfs search passing in source node
-	void clearStrings();
+	void clearStrings(); //Clear member strings
 	void DFSUtil(int v, bool visited[]); //Revursive function used by dfs search
 	std::string DFS(int v); //Dfs traversal of vertices, from source v?
 	bool m_bOneTimeUse;
