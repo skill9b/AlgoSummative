@@ -46,7 +46,7 @@ int g_obstacleGrid[10][10] = { {IDC_CHECK101, IDC_CHECK102, IDC_CHECK103, IDC_CH
 							   {IDC_CHECK161, IDC_CHECK162, IDC_CHECK163, IDC_CHECK164, IDC_CHECK165, IDC_CHECK166, IDC_CHECK167, IDC_CHECK168, IDC_CHECK169, IDC_CHECK170},
 							   {IDC_CHECK171, IDC_CHECK172, IDC_CHECK173, IDC_CHECK174, IDC_CHECK175, IDC_CHECK176, IDC_CHECK177, IDC_CHECK178, IDC_CHECK179, IDC_CHECK180},
 							   {IDC_CHECK181, IDC_CHECK182, IDC_CHECK183, IDC_CHECK184, IDC_CHECK185, IDC_CHECK186, IDC_CHECK187, IDC_CHECK188, IDC_CHECK189, IDC_CHECK190},
-							   {IDC_CHECK191, IDC_CHECK192, IDC_CHECK193, IDC_CHECK194, IDC_CHECK195, IDC_CHECK196, IDC_CHECK197, IDC_CHECK198, IDC_CHECK199, IDC_CHECK200} };
+							   {IDC_CHECK201, IDC_CHECK202, IDC_CHECK203, IDC_CHECK204, IDC_CHECK205, IDC_CHECK206, IDC_CHECK207, IDC_CHECK208, IDC_CHECK209, IDC_CHECK210} };
 
 
 // Local Includes
@@ -223,6 +223,60 @@ void ReadObstacleGrid(HWND _hDlg, Pathfinding* path) {
 			if (IsDlgButtonChecked(_hDlg, g_obstacleGrid[i][j]) == BST_CHECKED)
 			{
 				path->AddObstacle(i, j);
+			}
+		}
+	}
+}
+
+
+
+void FinalSetAllCheckboxes(HWND _hDlg, int _finalSourceDest[10][10], int _finalOutput[10][10]) {
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			if (IsDlgButtonChecked(_hDlg, g_sourceDestinationGrid[i][j]) == BST_CHECKED) {
+				_finalSourceDest[i][j] = 11;
+			}
+			else if (IsDlgButtonChecked(_hDlg, g_sourceDestinationGrid[i][j]) == BST_UNCHECKED) {
+				_finalSourceDest[i][j] = 10;
+			}
+			else if (IsDlgButtonChecked(_hDlg, g_sourceDestinationGrid[i][j]) == BST_INDETERMINATE) {
+				_finalSourceDest[i][j] = -11;
+			}
+
+			if (IsDlgButtonChecked(_hDlg, g_obstacleGrid[i][j]) == BST_CHECKED) {
+				_finalOutput[i][j] = 11;
+			}
+			else if (IsDlgButtonChecked(_hDlg, g_obstacleGrid[i][j]) == BST_UNCHECKED) {
+				_finalOutput[i][j] = 10;
+			}
+			else if (IsDlgButtonChecked(_hDlg, g_obstacleGrid[i][j]) == BST_INDETERMINATE) {
+				_finalOutput[i][j] = -11;
+			}
+		}
+	}
+}
+
+void FreezeCheckboxes(HWND _hDlg, int _finalSourceDest[10][10], int _finalOutput[10][10]) {
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			if (_finalSourceDest[i][j] == 11) {
+				CheckDlgButton(_hDlg, g_sourceDestinationGrid[i][j], BST_CHECKED);
+			}
+			else if (_finalSourceDest[i][j] == 10) {
+				CheckDlgButton(_hDlg, g_sourceDestinationGrid[i][j], BST_UNCHECKED);
+			}
+			else if (_finalSourceDest[i][j] == -11) {
+				CheckDlgButton(_hDlg, g_sourceDestinationGrid[i][j], BST_INDETERMINATE);
+			}
+
+			if (_finalOutput[i][j] == 11) {
+				CheckDlgButton(_hDlg, g_obstacleGrid[i][j], BST_CHECKED);
+			}
+			else if (_finalOutput[i][j] == 10) {
+				CheckDlgButton(_hDlg, g_obstacleGrid[i][j], BST_UNCHECKED);
+			}
+			else if (_finalOutput[i][j] == -11) {
+				CheckDlgButton(_hDlg, g_obstacleGrid[i][j], BST_INDETERMINATE);
 			}
 		}
 	}

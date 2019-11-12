@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
-// Used by GD1M02Project.rc
+// Used by GD1P02FINAL.rc
 //
 #define IDD_DialogBFSDFS                101
 #define IDD_DialogAStar                 102
@@ -235,6 +235,16 @@
 #define IDC_CHECK198                    1345
 #define IDC_CHECK199                    1346
 #define IDC_CHECK200                    1347
+#define IDC_CHECK201                    1348
+#define IDC_CHECK202                    1349
+#define IDC_CHECK203                    1350
+#define IDC_CHECK204                    1351
+#define IDC_CHECK205                    1352
+#define IDC_CHECK206                    1353
+#define IDC_CHECK207                    1354
+#define IDC_CHECK208                    1355
+#define IDC_CHECK209                    1356
+#define IDC_CHECK210                    1357
 
 // Next default values for new objects
 // 

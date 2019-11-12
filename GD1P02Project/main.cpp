@@ -37,6 +37,8 @@ HWND BfsDfsButton, AStarButton;
 // A* Pathfinding variables
 int iSourceDest[4] = { -1, -1, -1, -1 };
 bool bPathCalculated = false;
+int finalSourceDest[10][10] = { 0 };
+int finalOutput[10][10] = { 0 };
 
 LRESULT CALLBACK WindowProc(HWND _hwnd,
 	UINT _msg,
@@ -440,6 +442,10 @@ BOOL CALLBACK AStarDlgProc(HWND _hwnd,
 		// Constantly check Source & Destination grid for values and update Obstacle grid until path calculated
 		CheckSourceDestinationGrid(_hwnd, iSourceDest);
 	}
+	else 
+	{
+		FreezeCheckboxes(_hwnd, finalSourceDest, finalOutput);
+	}
 
 	switch (_msg)
 	{
@@ -483,6 +489,9 @@ BOOL CALLBACK AStarDlgProc(HWND _hwnd,
 						CheckDlgButton(_hwnd, g_obstacleGrid[currentNode->GetX()][currentNode->GetY()], BST_CHECKED);
 						currentNode = currentNode->GetPreviousNode();
 					}
+
+					// Freeze all checkboxes for final output display
+					FinalSetAllCheckboxes(_hwnd, finalSourceDest, finalOutput);
 
 				}
 				break;
