@@ -177,7 +177,7 @@ std::set<Node*>* Pathfinding::GetNeighbourList(Node* _currentNode) {
 	int iX = _currentNode->GetX();
 	int iY = _currentNode->GetY();
 
-	// Left
+	// Left																	   //// Nested ifs make sure you can't cut corners on obstacles
 	if ((iX - 1) >= 0) {														// Checks if Left is out of bounds	
 
 		if (!m_pGrid[iX - 1][iY]->IsObstacle()) {								// Checks if Left is obstacle
@@ -199,7 +199,7 @@ std::set<Node*>* Pathfinding::GetNeighbourList(Node* _currentNode) {
 			if ((iY + 1) < 10) {												// Checks if node Above is out of bounds
 				if (!m_pGrid[iX][iY + 1]->IsObstacle()) {						// Checks if Bottom node is obstacle						
 					if (!m_pGrid[iX - 1][iY + 1]->IsObstacle()) {				// Checks if Bottom Left node is Obstacle
-						neighbourList->insert(m_pGrid[iX - 1][iY + 1]);			// Insert 
+						neighbourList->insert(m_pGrid[iX - 1][iY + 1]);			// Insert into neighbourList
 					}
 					else
 					{
@@ -214,16 +214,16 @@ std::set<Node*>* Pathfinding::GetNeighbourList(Node* _currentNode) {
 		}
 
 	}
-	// Right
+	// Right																	///Same thing as above but checks right side of current node
 	if ((iX + 1) < 10) {			
 		if (!m_pGrid[iX + 1][iY]->IsObstacle()) {
 
-			neighbourList->insert(m_pGrid[iX + 1][iY]);						// Insert right
+			neighbourList->insert(m_pGrid[iX + 1][iY]);							// Insert right
 
 			if ((iY - 1) >= 0) {
-				if (!m_pGrid[iX][iY - 1]->IsObstacle()) {					// Top (check)
+				if (!m_pGrid[iX][iY - 1]->IsObstacle()) {						// Top (check)
 					if (!m_pGrid[iX + 1][iY - 1]->IsObstacle()) {
-						neighbourList->insert(m_pGrid[iX + 1][iY - 1]);		// Right top
+						neighbourList->insert(m_pGrid[iX + 1][iY - 1]);			// Right top
 					}
 					else
 					{
@@ -233,44 +233,44 @@ std::set<Node*>* Pathfinding::GetNeighbourList(Node* _currentNode) {
 			}
 
 			if ((iY + 1) < 10) {
-				if (!m_pGrid[iX][iY + 1]->IsObstacle()) {					// Bottom (check)
-					if (!m_pGrid[iX + 1][iY + 1]->IsObstacle()) {
-						neighbourList->insert(m_pGrid[iX + 1][iY + 1]);		// Right bottom
-					}
-					else
-					{
-						m_closedList->insert(m_pGrid[iX + 1][iY + 1]);
-					}
-				}
-			}
-		}
-		else
-		{
-			m_closedList->insert(m_pGrid[iX + 1][iY]);
-		}
-	}
-
-	// Insert Top node if not obstacle
-	if ((iY - 1) >= 0) {		
-		if (!m_pGrid[iX][iY - 1]->IsObstacle()) {
-			neighbourList->insert(m_pGrid[iX][iY - 1]);
-		}
-		else
-		{
-			m_closedList->insert(m_pGrid[iX][iY - 1]);
-		}
-	}
-	// Insert Bottom node if not obstacle
-	if ((iY + 1) < 10) {			
-		if (!m_pGrid[iX][iY + 1]->IsObstacle()) {
-			neighbourList->insert(m_pGrid[iX][iY + 1]);
-		}
-		else
-		{
-			m_closedList->insert(m_pGrid[iX][iY + 1]);
-		}
-	}
-
+				if (!m_pGrid[iX][iY + 1]->IsObstacle()) {						// Bottom (check)
+					if (!m_pGrid[iX + 1][iY + 1]->IsObstacle()) {				
+						neighbourList->insert(m_pGrid[iX + 1][iY + 1]);			// Right bottom
+					}															
+					else														
+					{															
+						m_closedList->insert(m_pGrid[iX + 1][iY + 1]);			
+					}															
+				}																
+			}																	
+		}																		
+		else																	
+		{																		
+			m_closedList->insert(m_pGrid[iX + 1][iY]);							
+		}																		
+	}																			
+																				
+	// Insert Top node if not obstacle											
+	if ((iY - 1) >= 0) {														// Check if Top node is in bounds
+		if (!m_pGrid[iX][iY - 1]->IsObstacle()) {								// If Top node is not a obstacle
+			neighbourList->insert(m_pGrid[iX][iY - 1]);							// Insert to neighbourList
+		}																		
+		else																	
+		{																		
+			m_closedList->insert(m_pGrid[iX][iY - 1]);							// Insert to closed if obstacle
+		}																		
+	}																			
+	// Insert Bottom node if not obstacle										
+	if ((iY + 1) < 10) {														// Check if Bottom node is in bounds
+		if (!m_pGrid[iX][iY + 1]->IsObstacle()) {   							// If bottom node is not a obstacle
+			neighbourList->insert(m_pGrid[iX][iY + 1]);							// Insert to neighbourList
+		}																		
+		else																	
+		{																		
+			m_closedList->insert(m_pGrid[iX][iY + 1]);							// Insert into closed list if obstacle
+		}																		
+	}																			
+																				
 	std::set<Node*>::iterator it = neighbourList->begin();
 
 	while (it != neighbourList->end()) {

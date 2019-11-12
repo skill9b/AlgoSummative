@@ -46,6 +46,7 @@ std::string Graph::BFS(int s)
 	std::string strBFS;
 	std::string strNodeToAdd; //String stores current node to add to strBFS
 	m_bOneTimeUse = true;
+
 	//Mark all vertices as not visited 
 	bool* verticesVisited = new bool[iVertices];
 	for (int i = 0; i < iVertices; i++)
@@ -66,7 +67,6 @@ std::string Graph::BFS(int s)
 	while (!Queue.empty())
 	{
 		s = Queue.front(); //Make sure current visited vertex is front of queue
-		//cout << s << " "; //Output vertex
 
 		//Combine all into string here and return at the end
 		strNodeToAdd = std::to_string(s);
@@ -121,13 +121,12 @@ void Graph::DFSUtil(int v, bool _verticesVisited[])
 {
 	//Mark current node as visited and output
 	_verticesVisited[v] = true;
-	//cout << v << " ";
 
 	m_strDFSCurrentNode = std::to_string(v);
 
 	if (m_bOneTimeUse)
 	{
-		m_strDFSOutput = m_strDFSCurrentNode; //Set it once to start
+		m_strDFSOutput = m_strDFSCurrentNode; //Set it once for first node output
 		m_bOneTimeUse = false;
 	}
 	else
